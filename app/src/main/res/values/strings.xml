@@ -8,4 +8,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="smartlock">SmartLock</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="unlock">Unlock</string>
+    <string name="lock">Lock</string>
+    <string name="locked">Locked</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="history">History</string>
+    <string name="passcodes">Passcodes</string>
+    <string name="users">Users</string>
 </resources>
