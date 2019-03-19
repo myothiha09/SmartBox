@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.team8303.smartbox.EditPasscodeActivity"
+    tools:showIn="@layout/activity_edit_passcode">
+
+    <TextView
+        android:id="@+id/passcodeNameText"
+        android:layout_width="109dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Passcode Name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/passcodeName"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="440dp"
+        android:text="Passcode 1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <EditText
+        android:id="@+id/passcodeNumber"
+        android:layout_width="293dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="400dp"
+        android:layout_marginLeft="16dp"
+        android:hint="Passcode (### ###)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/generateButton"
+        android:layout_width="51dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="400dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/passcodeSelect"
+        android:layout_width="147dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="360dp"
+        android:layout_marginLeft="40dp"
+        android:text="Select Passcode Type: "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/passcodeType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="196dp"
+        android:layout_marginTop="132dp"
+        android:textColor="@color/aqua"
+        android:text="Permanent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/dropDownMenu"
+        android:layout_width="34dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="360dp"
+        android:layout_marginRight="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"></Spinner>
+
+    <TextView
+        android:id="@+id/passcodeDescription"
+        android:layout_width="218dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="160dp"
+        android:text="Passcode is permanent by default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notifications1"
+        android:layout_width="82dp"
+        android:layout_height="17dp"
+        android:layout_marginBottom="292dp"
+        android:layout_marginLeft="72dp"
+        android:text="Notifications"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/notificationDescription1"
+        android:layout_width="190dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="72dp"
+        android:text="Receive notifications when you forget to close the Smartbox"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.478" />
+
+    <Switch
+        android:id="@+id/notificationSwitch1"
+        android:layout_width="46dp"
+        android:layout_height="28dp"
+        android:layout_marginRight="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.453" />
+
+    <CheckBox
+        android:id="@+id/sun"
+        android:layout_width="282dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="188dp"
+        android:layoutDirection="rtl"
+        android:text="Sunday"
+        android:textAlignment="textStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/mon"
+        android:layout_width="282dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="216dp"
+        android:layoutDirection="rtl"
+        android:text="Monday"
+        android:textAlignment="textStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/tues"
+        android:layout_width="282dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="240dp"
+        android:layoutDirection="rtl"
+        android:text="Tuesday"
+        android:textAlignment="textStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/wed"
+        android:layout_width="282dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="268dp"
+        android:layoutDirection="rtl"
+        android:text="Wednesday"
+        android:textAlignment="textStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <CheckBox
+        android:id="@+id/thur"
+        android:layout_width="282dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="296dp"
+        android:layoutDirection="rtl"
+        android:text="Thursday"
+        android:textAlignment="textStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/fri"
+        android:layout_width="282dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="324dp"
+        android:layoutDirection="rtl"
+        android:text="Friday"
+        android:textAlignment="textStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/sat"
+        android:layout_width="282dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="352dp"
+        android:layoutDirection="rtl"
+        android:text="Saturday"
+        android:textAlignment="textStart"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioButton
+        android:id="@+id/daySwitch"
+        android:layout_width="106dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="188dp"
+        android:text="All Day"
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/startDate"
+        android:layout_width="105dp"
+        android:layout_height="27dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="240dp"
+        android:text="Start Date:"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/calendar1"
+        android:layout_width="92dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="268dp"
+        android:focusableInTouchMode="false"
+        android:hint="Enter date here"
+        android:inputType="none|date"
+        app:layout_constraintHorizontal_bias="0.178"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/calendar2"
+        android:layout_width="92dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="324dp"
+        android:focusableInTouchMode="false"
+        android:hint="Enter date here"
+        android:inputType="none|date"
+        app:layout_constraintHorizontal_bias="0.178"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/time1"
+        android:layout_width="92dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="268dp"
+        android:focusableInTouchMode="false"
+        android:hint="Enter time here"
+        android:inputType="none|date"
+        app:layout_constraintHorizontal_bias="0.671"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/time2"
+        android:layout_width="92dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="324dp"
+        android:focusableInTouchMode="false"
+        android:hint="Enter time here"
+        android:inputType="none|date"
+        app:layout_constraintHorizontal_bias="0.671"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/endDate"
+        android:layout_width="105dp"
+        android:layout_height="27dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="296dp"
+        android:text="End Date:"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/startTime"
+        android:layout_width="105dp"
+        android:layout_height="27dp"
+        android:layout_marginLeft="196dp"
+        android:layout_marginTop="240dp"
+        android:text="Start Time"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/endTime"
+        android:layout_width="105dp"
+        android:layout_height="27dp"
+        android:layout_marginLeft="196dp"
+        android:layout_marginTop="296dp"
+        android:text="End Time"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notifications2"
+        android:layout_width="82dp"
+        android:layout_height="18dp"
+        android:layout_marginBottom="108dp"
+        android:layout_marginLeft="72dp"
+        android:text="Notifications"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/notificationDescription2"
+        android:layout_width="190dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="72dp"
+        android:text="Receive notifications when you forget to close the Smartbox"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.877" />
+
+    <Switch
+        android:id="@+id/notificationSwitch2"
+        android:layout_width="46dp"
+        android:layout_height="28dp"
+        android:layout_marginRight="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.832" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="78dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

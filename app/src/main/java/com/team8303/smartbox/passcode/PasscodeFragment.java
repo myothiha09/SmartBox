@@ -1,6 +1,7 @@
 package com.team8303.smartbox.passcode;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.team8303.model.Model;
 import com.team8303.model.Passcode;
+import com.team8303.smartbox.EditPasscodeActivity;
 import com.team8303.smartbox.R;
 import com.team8303.util.ItemClickedListener;
 
@@ -54,7 +56,9 @@ public class PasscodeFragment extends Fragment {
             @Override
             public void itemChosen(int position) {
                 Passcode passcode = list.get(position);
-                Toast.makeText(getContext(), passcode.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), passcode.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), EditPasscodeActivity.class);
+                startActivity(intent);
             }
 
             @Override
