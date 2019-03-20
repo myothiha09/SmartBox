@@ -58,6 +58,9 @@ public class PasscodeFragment extends Fragment {
                 Passcode passcode = list.get(position);
                 //Toast.makeText(getContext(), passcode.getName() + " is clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), EditPasscodeActivity.class);
+                intent.putExtra("Name", passcode.getName());
+                intent.putExtra("Number", passcode.getNumber());
+                intent.putExtra("Type", passcode.getType().toString());
                 startActivity(intent);
             }
 

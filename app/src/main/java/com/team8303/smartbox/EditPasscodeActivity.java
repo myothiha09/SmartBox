@@ -91,7 +91,7 @@ public class EditPasscodeActivity extends AppCompatActivity implements
 
 
         dropDownMenu.setAdapter(adapter);
-        dropDownMenu.setSelection(0);
+        //dropDownMenu.setSelection(0);
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +101,26 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });*/
+        name.setText(getIntent().getStringExtra("Name"));
+        number.setText(getIntent().getStringExtra("Number"));
+        String type = getIntent().getStringExtra("Type");
+        switch (type) {
+            case "Permanent":
+                dropDownMenu.setSelection(0);
+            break;
+            case "Temporary":
+                dropDownMenu.setSelection(1);
+            break;
+            case "Repeat":
+                dropDownMenu.setSelection(2);
+            break;
+            case "One_time":
+                dropDownMenu.setSelection(3);
+            break;
+            default:
+               dropDownMenu.setSelection(0);
+            break;
+        }
 
         generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +134,10 @@ public class EditPasscodeActivity extends AppCompatActivity implements
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Add passcode to firebase
+                /*if (!name.getText().toString().equals(getIntent().getStringExtra("Name"))) {
+                    //pass new parameters to passcode
+                }*/
+                //...And add passcode to firebase
                 Intent intent = new Intent(EditPasscodeActivity.this, MainActivity.class);
                 startActivity(intent);
             }

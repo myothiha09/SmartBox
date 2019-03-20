@@ -10,13 +10,18 @@ public class Passcode {
     String validPeriod;
     String creationTime;
     boolean enabled;
+    String number;
+    PasscodeType type;
 
-    public Passcode(String name, int usedCount, String validPeriod, String creationTime, boolean enabled) {
+    public Passcode(String name, int usedCount, String validPeriod, String creationTime,
+                    boolean enabled, String number, PasscodeType type) {
         this.name = name;
         this.usedCount = usedCount;
         this.validPeriod = validPeriod;
         this.creationTime = creationTime;
         this.enabled = enabled;
+        this.number = number;
+        this.type = type;
     }
 
     public boolean isEnabled() {
@@ -58,4 +63,12 @@ public class Passcode {
     public void setCreationTime(String creationTime) {
         this.creationTime = creationTime;
     }
+
+    public String getNumber() { return number; }
+
+    public void setNumber(String number) { this.number = number; }
+
+    public PasscodeType getType() { return this.type; }
+
+    public void setType(PasscodeType type) { this.type = type; }
 }

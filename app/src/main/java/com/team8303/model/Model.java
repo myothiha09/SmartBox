@@ -15,16 +15,23 @@ public class Model {
 
     private static Model model;
     private Model() {
-        permanentPasscodes.add(new Passcode("Passcode 1", 0, "", "2/25/2019", false));
-        permanentPasscodes.add(new Passcode("Passcode 2", 0, "", "2/14/2019", true));
-        permanentPasscodes.add(new Passcode("Passcode 3", 0, "", "2/16/2019", false));
+        permanentPasscodes.add(new Passcode("Passcode 1", 0, "", "2/25/2019",
+                false, "974632", PasscodeType.Permanent));
+        permanentPasscodes.add(new Passcode("Passcode 2", 0, "", "2/14/2019",
+                true, "123456", PasscodeType.Permanent));
+        permanentPasscodes.add(new Passcode("Passcode 3", 0, "", "2/16/2019",
+                false, "485201", PasscodeType.Permanent));
 
-        tempPasscodes.add(new Passcode("Passcode 4", 0, "2/25 (6PM) - 2/25(9PM)", "2/25/2019", false));
-        tempPasscodes.add(new Passcode("Passcode 5", 0, "2/22 (6PM) - 2/22(9PM)", "2/25/2019", true));
+        tempPasscodes.add(new Passcode("Passcode 4", 0, "2/25 (6PM) - 2/25(9PM)",
+                "2/25/2019", false, "355000", PasscodeType.Temporary));
+        tempPasscodes.add(new Passcode("Passcode 5", 0, "2/22 (6PM) - 2/22(9PM)",
+                "2/25/2019", true, "111111", PasscodeType.Temporary));
 
-        repeatPasscodes.add(new Passcode("Passcode 6", 0, "Every Mon, Wed, Fri", "2/25/2019", false));
+        repeatPasscodes.add(new Passcode("Passcode 6", 0, "Every Mon, Wed, Fri",
+                "2/25/2019", false, "876543", PasscodeType.Repeat));
 
-        onePasscodes.add(new Passcode("Passcode 7", 0, "", "2/25/2019", false));
+        onePasscodes.add(new Passcode("Passcode 7", 0, "", "2/25/2019",false,
+                "503214", PasscodeType.One_time));
 
     }
     public static Model getInstance() {
