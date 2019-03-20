@@ -5,11 +5,12 @@ package com.team8303.model;
  * creates and sets stuff for a user
  * */
 public class User {
+    private String name;
     private String username = "";
     private String password;
     private UserType userType;
-    private int reservationNumber;
-    private String reservationLocation;
+    private String phoneNumber;
+    private String email;
 
     /**
      * creates a user
@@ -24,16 +25,21 @@ public class User {
      * @param username the users name
      * @param password the users password
      * @param userType admin or user
-     * @param reservationNumber how many beds they've reserved
-     * @param reservationLocation where they have a reservation
      * */
-    public User(String username, String password, UserType userType,
-                int reservationNumber, String reservationLocation) {
+    public User(String name, String username, String password, UserType userType,
+                String phoneNumber, String email) {
+        this.name = name;
         this.username = username;
         this.password = password;
         this.userType = userType;
-        this.reservationNumber = reservationNumber;
-        this.reservationLocation = reservationLocation;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
+    public String getName() { return name; }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -58,28 +64,16 @@ public class User {
         return password;
     }
 
-    /**
-     * @return user's reservation bed count
-     * */
-    public int getReservationNumber() { return reservationNumber;}
+    public String getPhoneNumber() { return phoneNumber;}
 
-    /**
-     * @param reservationNumber number of bed's they've reserved
-     * */
-    public void setReservationNumber(int reservationNumber) {
-        this.reservationNumber = reservationNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    /**
-     * @return user's reservation location
-     * */
-    public String getReservationLocation() { return reservationLocation;}
+    public String getEmail() { return email;}
 
-    /**
-     * @param reservationLocation where they have reservation
-     * */
-    public void setReservationLocation(String reservationLocation) {
-        this.reservationLocation = reservationLocation;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**

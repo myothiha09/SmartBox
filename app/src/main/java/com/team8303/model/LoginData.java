@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class LoginData {
 
     private static ArrayList<User> userInfo = new ArrayList<>();
-    private static final User first = new User("user","pass",UserType.USER,0,"");
+    private static final User first = new User("name", "user","pass",UserType.USER,"", "");
 
 
     //private Context context; WARNING!!!! Never store Contexts. They were not meant to be stored.
@@ -93,17 +93,8 @@ public class LoginData {
         return ourUser;
     }
 
-    /**
-     * adds a user to the array of users
-     *
-     * @param name the username
-     * @param pass the password
-     * @param type admin or user
-     * @param number the reservation number
-     * @param place the reservation location
-     * */
-    public static void addUser(String name, String pass, UserType type, int number, String place) {
-        User newser = new User(name,pass,type,number,place);
+    public static void addUser(String name, String user, String pass, UserType type, String number, String email) {
+        User newser = new User(name,user,pass,type,number, email);
         userInfo.add(newser);
         /*I've been storing registered users in this userInfo ArrayList, which isn't linked
         to the database, but is easier to work with. I can't write to db, because doing so
