@@ -15,6 +15,10 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.team8303.model.Model;
+import com.team8303.model.Passcode;
+import com.team8303.model.PasscodeType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -89,6 +93,11 @@ public class EditPasscodeActivity extends AppCompatActivity implements
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, passcodeTypes);
 
+        final int usedCount = getIntent().getIntExtra("Used Count", 0);
+        final String validPeriod = getIntent().getStringExtra("Valid Period");
+        final String creationTime = getIntent().getStringExtra("Creation Time");
+        final boolean enabled = getIntent().getBooleanExtra("Enabled", true);
+        final int position = getIntent().getIntExtra("Position", 0);
 
         dropDownMenu.setAdapter(adapter);
         //dropDownMenu.setSelection(0);
@@ -137,7 +146,12 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                 /*if (!name.getText().toString().equals(getIntent().getStringExtra("Name"))) {
                     //pass new parameters to passcode
                 }*/
-                //...And add passcode to firebase
+                //...And add passcode to
+                PasscodeType codeType = PasscodeType.values()[dropDownMenu.getSelectedItemPosition()];
+                Model.permanentPasscodes.remove(position);
+                Model.permanentPasscodes.add(position, new Passcode(name.getText().toString(),
+                        usedCount, validPeriod, creationTime, enabled, number.getText().toString(),
+                        codeType));
                 Intent intent = new Intent(EditPasscodeActivity.this, MainActivity.class);
                 startActivity(intent);
             }

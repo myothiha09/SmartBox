@@ -5,5 +5,5 @@ package com.team8303.model;
  */
 
 public enum PasscodeType {
-    Permanent, Temporary, One_time, Repeat;
+    Permanent, Temporary, Repeat, One_time;
 }
