@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.EventLog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,13 +16,24 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.team8303.SmartBoxApplication;
+import com.team8303.api.ApiService;
+import com.team8303.api.model.UserLockResponse;
+import com.team8303.events.LockListEvent;
 import com.team8303.model.Model;
 import com.team8303.model.Passcode;
 import com.team8303.model.PasscodeType;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import rx.Observer;
+import rx.schedulers.Schedulers;
 
 public class EditPasscodeActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener{
@@ -152,10 +164,28 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                 Model.permanentPasscodes.add(position, new Passcode(name.getText().toString(),
                         usedCount, validPeriod, creationTime, enabled, number.getText().toString(),
                         codeType));
-                Intent intent = new Intent(EditPasscodeActivity.this, MainActivity.class);
-                startActivity(intent);
+
+                SmartBoxApplication.getInstance().getLockApiService().getLockList();
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onLockListEvent(LockListEvent event) {
+        Intent intent = new Intent(EditPasscodeActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
