@@ -26,11 +26,11 @@ public class Model {
     private static Model model;
     private Model() {
 
-        permanentPasscodes.add(new Passcode("Passcode 1", 0, "",
+        permanentPasscodes.add(new Passcode("Passcode 1", 0, "3/31/2019",
                 false, "974632", PasscodeType.Permanent));
-        permanentPasscodes.add(new Passcode("Passcode 2", 0, "",
+        permanentPasscodes.add(new Passcode("Passcode 2", 0, "3/31/2019",
                 true, "123456", PasscodeType.Permanent));
-        permanentPasscodes.add(new Passcode("Passcode 3", 0, "",
+        permanentPasscodes.add(new Passcode("Passcode 3", 0, "3/31/2019",
                 false, "485201", PasscodeType.Permanent));
 
         tempPasscodes.add(new Passcode("Passcode 4", 0, "2/25/2019",

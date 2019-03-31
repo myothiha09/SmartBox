@@ -81,6 +81,9 @@ public class Passcode {
         daysOfWeek[6] = sat;
 
     }
+    public String getValidPeriod() {
+        return "Implementation needed";
+    }
 
     public String getStartDate() {return this.startDate; }
 
