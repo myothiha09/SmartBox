@@ -1,6 +1,10 @@
 package com.team8303.model;
 
+import com.team8303.smartbox.smartbox_history.BoxHistoryItem;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -12,6 +16,8 @@ public class Model {
     public static List<Passcode> tempPasscodes = new ArrayList<>();
     public static List<Passcode> onePasscodes = new ArrayList<>();
     public static List<Passcode> repeatPasscodes = new ArrayList<>();
+
+    public static HashMap<String, BoxHistoryItem> boxHistory = new LinkedHashMap<>();
 
     public static User user = new User("George Burdell", "buzzrox", "", UserType.USER, "678-136-7092", "buzz@gg.com", 1, "3/31/2019");
 
@@ -74,6 +80,14 @@ public class Model {
             return onePasscodes;
         }
         return new ArrayList<>(); //placeholder
+    }
+
+    //returning LinkedHashMap to preserve order for keys
+    public static HashMap<String, BoxHistoryItem> getBoxHistory() {
+        if (USE_MOCK) {
+            return boxHistory;
+        }
+        return new HashMap<>();
     }
 
     public static Model getInstance() {

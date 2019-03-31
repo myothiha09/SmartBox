@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.team8303.model.Model;
 import com.team8303.smartbox.passcode.PasscodeFragment;
+import com.team8303.smartbox.smartbox_history.BoxHistoryItemFragment;
 import com.team8303.smartbox.user_profile.UserProfileFragment;
 
 import butterknife.ButterKnife;
@@ -98,7 +99,10 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_gallery) {
-
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, new BoxHistoryItemFragment())
+                    .addToBackStack(null)
+                    .commit();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
