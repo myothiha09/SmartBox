@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
         userIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new UserProfileFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new UserProfileFragment()).addToBackStack(null).commit();
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
             }
