@@ -37,6 +37,9 @@ public class PasscodeFragment extends Fragment {
     TabLayout layout;
 
     @BindString(R.string.permanent) String _permanent;
+    @BindString(R.string.temp) String _temp;
+    @BindString(R.string.repeat) String _repeat;
+    @BindString(R.string.one_time) String _one_time;
     public static PasscodeRecyclerAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -51,9 +54,22 @@ public class PasscodeFragment extends Fragment {
         layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getText().toString().equals(_permanent)) {
+                String title = tab.getText().toString();
+                if (title.equals(_permanent)) {
                     Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
+                    adapter.setPasscodeList(Model.getPermanentPasscodes());
+                } else if (title.equals(_temp)) {
+                    Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
+                    adapter.setPasscodeList(Model.getTempPasscodes());
+                } else if (title.equals(_repeat)) {
+                    Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
+                    adapter.setPasscodeList(Model.getRepeatPasscodes());
+                } else if (title.equals(_one_time)) {
+                    Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
+                    adapter.setPasscodeList(Model.getOnePasscodes());
                 }
+
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -73,11 +89,9 @@ public class PasscodeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        final List<Passcode> list = Model.permanentPasscodes;
-        adapter = new PasscodeRecyclerAdapter(getContext(), list);
+        adapter = new PasscodeRecyclerAdapter(getContext(), Model.getPermanentPasscodes());
         adapter.setListener(new ItemClickedListener<Passcode>() {
-            final List<Passcode> passcodes = Model.permanentPasscodes;
-
+            final List<Passcode> list = adapter.getPasscodeList();
             @Override
             public void itemChosen(int position) {
                 Passcode passcode = list.get(position);

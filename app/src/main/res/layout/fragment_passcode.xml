@@ -18,9 +18,9 @@
 
         <android.support.design.widget.TabItem android:text="@string/permanent" />
 
-        <android.support.design.widget.TabItem android:text="@string/repeat" />
-
         <android.support.design.widget.TabItem android:text="@string/temp" />
+
+        <android.support.design.widget.TabItem android:text="@string/repeat" />
 
         <android.support.design.widget.TabItem android:text="@string/one_time" />
 

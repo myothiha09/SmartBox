@@ -52,7 +52,7 @@ public class Model {
         if (USE_MOCK) {
             return permanentPasscodes;
         }
-        return new ArrayList<>(); //placeholder
+        return new ArrayList<>(); //placeholder can make retrofit calls here
     }
 
     public static List<Passcode> getTempPasscodes() {

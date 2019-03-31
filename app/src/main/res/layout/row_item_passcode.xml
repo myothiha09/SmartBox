@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/passcode_card"
-    android:layout_margin="8dp"
-    android:elevation="8dp"
+    android:layout_marginTop="8dp"
+    android:elevation="4dp"
     android:padding="8dp"
     android:background="@android:color/white"
     android:layout_height="wrap_content">
