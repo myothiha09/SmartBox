@@ -13,7 +13,7 @@ public class Model {
     public static List<Passcode> onePasscodes = new ArrayList<>();
     public static List<Passcode> repeatPasscodes = new ArrayList<>();
 
-    public static User user = new User("Buzz", "buzz", "", UserType.USER, "123", "buzz@gg.com");
+    public static User user = new User("George Burdell", "buzzrox", "", UserType.USER, "678-136-7092", "buzz@gg.com", 1, "3/31/2019");
 
     private static boolean USE_MOCK = true;
 

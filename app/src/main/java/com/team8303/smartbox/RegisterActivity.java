@@ -107,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 User newUser = new User(name.getText().toString(), u.toString(), p.toString(),
-                        UserType.USER, phone.getText().toString(), email.getText().toString());
+                        UserType.USER, phone.getText().toString(), email.getText().toString(), 0, "");
                 users.add(newUser);
                 //passwords.add(password.getText().toString());
                 LoginData.setUserInfo(users);

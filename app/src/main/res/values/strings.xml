@@ -24,4 +24,11 @@
     <string name="temp">Temporary</string>
     <string name="one_time">OneTime</string>
     <string name="repeat">Repeat</string>
+    <string name="change_password">Change Password</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="username">Username</string>
+    <string name="active_count">Active Smartbox</string>
+    <string name="date_reg">Date Registered</string>
+    <string name="phone_num">Phone Number</string>
+    <string name="email">Email</string>
 </resources>

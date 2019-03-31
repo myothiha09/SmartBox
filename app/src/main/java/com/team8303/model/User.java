@@ -11,6 +11,8 @@ public class User {
     private UserType userType;
     private String phoneNumber;
     private String email;
+    public int activeCount;
+    private String date_registered;
 
     /**
      * creates a user
@@ -27,13 +29,23 @@ public class User {
      * @param userType admin or user
      * */
     public User(String name, String username, String password, UserType userType,
-                String phoneNumber, String email) {
+                String phoneNumber, String email, int activeCount, String date_registered) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.userType = userType;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.activeCount = activeCount;
+        this.date_registered = date_registered;
+    }
+
+    public String getDate_registered() {
+        return date_registered;
+    }
+
+    public void setDate_registered(String date_registered) {
+        this.date_registered = date_registered;
     }
 
     public String getName() { return name; }
@@ -102,5 +114,13 @@ public class User {
         int result = username.hashCode();
         result = (31 * result) + password.hashCode();
         return result;
+    }
+
+    public int getActiveCount() {
+        return activeCount;
+    }
+
+    public void setActiveCount(int activeCount) {
+        this.activeCount = activeCount;
     }
 }

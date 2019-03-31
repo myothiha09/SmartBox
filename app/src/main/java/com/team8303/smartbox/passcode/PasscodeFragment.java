@@ -56,16 +56,16 @@ public class PasscodeFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 String title = tab.getText().toString();
                 if (title.equals(_permanent)) {
-                    Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getPermanentPasscodes());
                 } else if (title.equals(_temp)) {
-                    Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getTempPasscodes());
                 } else if (title.equals(_repeat)) {
-                    Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getRepeatPasscodes());
                 } else if (title.equals(_one_time)) {
-                    Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getOnePasscodes());
                 }
 
