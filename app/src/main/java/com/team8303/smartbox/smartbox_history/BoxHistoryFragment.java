@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.team8303.model.Model;
 import com.team8303.smartbox.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class BoxHistoryItemFragment extends Fragment {
+public class BoxHistoryFragment extends Fragment {
     @BindView(R.id.history_recycler_view)
     RecyclerView recyclerView;
     public static BoxHistoryRecyclerAdapter adapter;
@@ -49,7 +48,7 @@ public class BoxHistoryItemFragment extends Fragment {
         HashMap<String, List<BoxHistoryItem>> hm = Model.getBoxHistory();
         for (String date: hm.keySet()) {
             List<BoxHistoryItem> items = hm.get(date);
-            HeaderDataImpl headerData1 = new HeaderDataImpl(HeaderDataImpl.HEADER_TYPE_1, R.layout.header_item_recycler, date);
+            BoxHistoryHeaderData headerData1 = new BoxHistoryHeaderData(BoxHistoryHeaderData.HEADER_TYPE_1, R.layout.header_item_recycler, date);
             adapter.setHeaderAndData(items, headerData1);
         }
     }

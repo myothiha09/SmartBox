@@ -4,7 +4,7 @@ import android.support.annotation.LayoutRes;
 
 import com.saber.stickyheader.stickyData.HeaderData;
 
-public class HeaderDataImpl implements HeaderData {
+public class BoxHistoryHeaderData implements HeaderData {
     public static final int HEADER_TYPE_1 = 1;
 
     private int headerType;
@@ -12,7 +12,7 @@ public class HeaderDataImpl implements HeaderData {
     private final int layoutResource;
 
     private String date;
-    public HeaderDataImpl(int headerType, @LayoutRes int layoutResource, String date) {
+    public BoxHistoryHeaderData(int headerType, @LayoutRes int layoutResource, String date) {
         this.layoutResource = layoutResource;
         this.headerType = headerType;
         this.date = date;

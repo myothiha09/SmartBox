@@ -17,7 +17,7 @@ public class Model {
     public static List<Passcode> onePasscodes = new ArrayList<>();
     public static List<Passcode> repeatPasscodes = new ArrayList<>();
 
-    public static HashMap<String, BoxHistoryItem> boxHistory = new LinkedHashMap<>();
+    public static HashMap<String, List<BoxHistoryItem>> boxHistory = new LinkedHashMap<>();
 
     public static User user = new User("George Burdell", "buzzrox", "", UserType.USER, "678-136-7092", "buzz@gg.com", 1, "3/31/2019");
 
@@ -44,6 +44,34 @@ public class Model {
         onePasscodes.add(new Passcode("Passcode 7", 0, "2/25/2019",
                 false, "503214", PasscodeType.One_time));
 
+        List<BoxHistoryItem> items = new ArrayList<>();
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+
+        boxHistory.put("March 31 2019", items);
+
+        items = new ArrayList<>();
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+
+        boxHistory.put("March 30 2019", items);
+
+        items = new ArrayList<>();
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem());
+
+        boxHistory.put("March 20 2019", items);
     }
 
     public static User getUserInfo() {
@@ -83,7 +111,7 @@ public class Model {
     }
 
     //returning LinkedHashMap to preserve order for keys
-    public static HashMap<String, BoxHistoryItem> getBoxHistory() {
+    public static HashMap<String, List<BoxHistoryItem>> getBoxHistory() {
         if (USE_MOCK) {
             return boxHistory;
         }
