@@ -166,6 +166,7 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                         codeType));
 
                 SmartBoxApplication.getInstance().getLockApiService().getLockStatus("-LbK-7O_EJzc38A7E3-L");
+                //SmartBoxApplication.getInstance().getLockApiService().getLockList();
             }
         });
     }

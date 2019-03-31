@@ -35,7 +35,6 @@ public class LockApiService {
                     @Override
                     public void onNext(Response<UserLockResponse> userLockResponse) {
                         if (userLockResponse.isSuccessful()) {
-
                             EventBus.getDefault().postSticky(new LockListEvent(userLockResponse.body(), true));
                         } else {
                             EventBus.getDefault().postSticky(new LockListEvent(null, false));
