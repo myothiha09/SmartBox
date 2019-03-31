@@ -13,8 +13,13 @@ public class Model {
     public static List<Passcode> onePasscodes = new ArrayList<>();
     public static List<Passcode> repeatPasscodes = new ArrayList<>();
 
+    public static User user = new User("Buzz", "buzz", "", UserType.USER, "123", "buzz@gg.com");
+
+    private static boolean USE_MOCK = true;
+
     private static Model model;
     private Model() {
+
         permanentPasscodes.add(new Passcode("Passcode 1", 0, "", "2/25/2019",
                 false, "974632", PasscodeType.Permanent));
         permanentPasscodes.add(new Passcode("Passcode 2", 0, "", "2/14/2019",
@@ -34,6 +39,43 @@ public class Model {
                 "503214", PasscodeType.One_time));
 
     }
+
+    public static User getUserInfo() {
+        if (USE_MOCK) {
+            return user;
+        }
+        return user;
+    }
+
+    //please do all retrievals for data inside similar methods as before for seamless switching between mock and real
+    public static List<Passcode> getPermanentPasscodes() {
+        if (USE_MOCK) {
+            return permanentPasscodes;
+        }
+        return new ArrayList<>(); //placeholder
+    }
+
+    public static List<Passcode> getTempPasscodes() {
+        if (USE_MOCK) {
+            return tempPasscodes;
+        }
+        return new ArrayList<>(); //placeholder
+    }
+
+    public static List<Passcode> getRepeatPasscodes() {
+        if (USE_MOCK) {
+            return repeatPasscodes;
+        }
+        return new ArrayList<>(); //placeholder
+    }
+
+    public static List<Passcode> getOnePasscodes() {
+        if (USE_MOCK) {
+            return onePasscodes;
+        }
+        return new ArrayList<>(); //placeholder
+    }
+
     public static Model getInstance() {
         if (model == null) {
             model = new Model();
