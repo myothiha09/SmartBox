@@ -20,4 +20,8 @@
     <string name="history">History</string>
     <string name="passcodes">Passcodes</string>
     <string name="users">Users</string>
+    <string name="permanent">Permanent</string>
+    <string name="temp">Temporary</string>
+    <string name="one_time">OneTime</string>
+    <string name="repeat">Repeat</string>
 </resources>

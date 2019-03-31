@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.team8303.util.ItemClickedListener;
 
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,6 +32,11 @@ public class PasscodeFragment extends Fragment {
 
     @BindView(R.id.passcode_recycler_view)
     RecyclerView recyclerView;
+
+    @BindView(R.id.tabLayout)
+    TabLayout layout;
+
+    @BindString(R.string.permanent) String _permanent;
     public static PasscodeRecyclerAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -41,6 +48,24 @@ public class PasscodeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_passcode, container, false);
         ButterKnife.bind(this, view);
         initRecycler();
+        layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getText().toString().equals(_permanent)) {
+                    Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         return view;
     }
 
