@@ -7,17 +7,20 @@ package com.team8303.model;
 public class Passcode {
     String name;
     int usedCount;
-    String validPeriod;
     String creationTime;
     boolean enabled;
     String number;
     PasscodeType type;
+    boolean[] daysOfWeek = new boolean[7];
+    String startDate;
+    String endDate;
+    String startTime;
+    String endTime;
 
-    public Passcode(String name, int usedCount, String validPeriod, String creationTime,
+    public Passcode(String name, int usedCount, String creationTime,
                     boolean enabled, String number, PasscodeType type) {
         this.name = name;
         this.usedCount = usedCount;
-        this.validPeriod = validPeriod;
         this.creationTime = creationTime;
         this.enabled = enabled;
         this.number = number;
@@ -48,14 +51,6 @@ public class Passcode {
         this.usedCount = usedCount;
     }
 
-    public String getValidPeriod() {
-        return validPeriod;
-    }
-
-    public void setValidPeriod(String validPeriod) {
-        this.validPeriod = validPeriod;
-    }
-
     public String getCreationTime() {
         return creationTime;
     }
@@ -71,4 +66,43 @@ public class Passcode {
     public PasscodeType getType() { return this.type; }
 
     public void setType(PasscodeType type) { this.type = type; }
+
+    public boolean[] getDaysOfWeek() { return this.daysOfWeek; }
+
+    public void setDaysOfWeek(boolean sun, boolean mon, boolean tues,
+                              boolean wed, boolean thurs, boolean fri,
+                              boolean sat) {
+        daysOfWeek[0] = sun;
+        daysOfWeek[1] = mon;
+        daysOfWeek[2] = tues;
+        daysOfWeek[3] = wed;
+        daysOfWeek[4] = thurs;
+        daysOfWeek[5] = fri;
+        daysOfWeek[6] = sat;
+
+    }
+
+    public String getStartDate() {return this.startDate; }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() { return this.endDate; }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStartTime() { return this.startTime; }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() { return this.endTime; }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 }

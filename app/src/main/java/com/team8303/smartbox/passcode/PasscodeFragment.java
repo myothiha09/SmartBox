@@ -51,7 +51,6 @@ public class PasscodeFragment extends Fragment {
         final List<Passcode> list = Model.permanentPasscodes;
         adapter = new PasscodeRecyclerAdapter(getContext(), list);
         adapter.setListener(new ItemClickedListener<Passcode>() {
-            final List<Passcode> passcodes = Model.permanentPasscodes;
 
             @Override
             public void itemChosen(int position) {
@@ -60,12 +59,16 @@ public class PasscodeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), EditPasscodeActivity.class);
                 intent.putExtra("Name", passcode.getName());
                 intent.putExtra("Used Count", passcode.getUsedCount());
-                intent.putExtra("Valid Period", passcode.getValidPeriod());
                 intent.putExtra("Creation Time", passcode.getCreationTime());
                 intent.putExtra("Enabled", passcode.isEnabled());
                 intent.putExtra("Number", passcode.getNumber());
                 intent.putExtra("Type", passcode.getType().toString());
                 intent.putExtra("Position", position);
+                intent.putExtra("Days", passcode.getDaysOfWeek());
+                intent.putExtra("startDate", passcode.getStartDate());
+                intent.putExtra("endDate", passcode.getEndDate());
+                intent.putExtra("startTime", passcode.getStartTime());
+                intent.putExtra("endTime", passcode.getEndTime());
                 startActivity(intent);
             }
 
