@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.team8303.model.Model;
 import com.team8303.smartbox.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,7 +37,6 @@ public class BoxHistoryItemFragment extends Fragment {
     }
 
     private void initRecycler() {
-        HeaderDataImpl headerData1 = new HeaderDataImpl(HeaderDataImpl.HEADER_TYPE_1, R.layout.header_item_recycler, "Date " + 1);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -43,43 +44,13 @@ public class BoxHistoryItemFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        List<BoxHistoryItem> items = new ArrayList<>();
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        adapter.setHeaderAndData(items, headerData1);
 
-        headerData1 = new HeaderDataImpl(HeaderDataImpl.HEADER_TYPE_1, R.layout.header_item_recycler, "Date " + 2);
-        items = new ArrayList<>();
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        adapter.setHeaderAndData(items, headerData1);
 
-        headerData1 = new HeaderDataImpl(HeaderDataImpl.HEADER_TYPE_1, R.layout.header_item_recycler, "Date " + 3);
-        items = new ArrayList<>();
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        adapter.setHeaderAndData(items, headerData1);
+        HashMap<String, List<BoxHistoryItem>> hm = Model.getBoxHistory();
+        for (String date: hm.keySet()) {
+            List<BoxHistoryItem> items = hm.get(date);
+            HeaderDataImpl headerData1 = new HeaderDataImpl(HeaderDataImpl.HEADER_TYPE_1, R.layout.header_item_recycler, date);
+            adapter.setHeaderAndData(items, headerData1);
+        }
     }
 }

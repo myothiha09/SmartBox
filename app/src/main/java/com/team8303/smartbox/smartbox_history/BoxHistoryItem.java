@@ -13,7 +13,7 @@ public class BoxHistoryItem implements StickyMainData {
     private Passcode passcode;
     boolean expanded = false;
     public BoxHistoryItem() {
-        unlocker = "Unlocker" + Math.random() * 99;
+        unlocker = "Unlocker " + (int) (Math.random() * 99);
     }
     public BoxHistoryItem(String date, String time, LockStatus lockStatus, String unlocker, Passcode passcode) {
         this.date = date;
