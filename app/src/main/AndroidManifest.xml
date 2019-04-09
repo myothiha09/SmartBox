@@ -30,7 +30,6 @@
             android:name=".EditPasscodeActivity"
             android:label="@string/title_activity_edit_passcode"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CalendarActivity"></activity>
     </application>
 
 </manifest>

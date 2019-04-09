@@ -1,20 +1,29 @@
 package com.team8303.smartbox;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.EventLog;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.team8303.SmartBoxApplication;
 import com.team8303.api.ApiService;
@@ -29,6 +38,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -42,7 +52,8 @@ public class EditPasscodeActivity extends AppCompatActivity implements
     EditText name;
     EditText number;
     Button generateButton;
-    TextView type;
+    TextView pType;
+    String type;
     Spinner dropDownMenu;
     TextView description;
     TextView notifyTitlePO, notifyDescriptionPO;
@@ -54,6 +65,46 @@ public class EditPasscodeActivity extends AppCompatActivity implements
     EditText setDate1, setDate2, setTime1, setTime2;
     TextView startDate, endDate, startTime, endTime;
     RadioButton allDay;
+
+    final Calendar calendar1 = Calendar.getInstance();
+    final Calendar calendar2 = Calendar.getInstance();
+    DatePickerDialog.OnDateSetListener date1 = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            calendar1.set(Calendar.YEAR, year);
+            calendar1.set(Calendar.MONTH, month);
+            calendar1.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            setDate1.setText(++month + "/" + dayOfMonth + "/" + year);
+        }
+    };
+
+    DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            calendar2.set(Calendar.YEAR, year);
+            calendar2.set(Calendar.MONTH, month);
+            calendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            setDate2.setText(++month + "/" + dayOfMonth + "/" + year);
+        }
+    };
+
+    TimePickerDialog.OnTimeSetListener time1 = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            calendar1.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar1.set(Calendar.MINUTE, minute);
+            setTime1.setText(hourOfDay + ":" + minute);
+        }
+    };
+
+    TimePickerDialog.OnTimeSetListener time2 = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            calendar2.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar2.set(Calendar.MINUTE, minute);
+            setTime2.setText(hourOfDay + ":" + minute);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +118,7 @@ public class EditPasscodeActivity extends AppCompatActivity implements
         name = findViewById(R.id.passcodeName);
         number = findViewById(R.id.passcodeNumber);
         generateButton = findViewById(R.id.generateButton);
-        type = findViewById(R.id.passcodeType);
+        pType = findViewById(R.id.passcodeType);
         dropDownMenu = findViewById(R.id.dropDownMenu);
         description = findViewById(R.id.passcodeDescription);
         notifyTitlePO = findViewById(R.id.notifications1);
@@ -109,7 +160,27 @@ public class EditPasscodeActivity extends AppCompatActivity implements
         final String validPeriod = getIntent().getStringExtra("Valid Period");
         final String creationTime = getIntent().getStringExtra("Creation Time");
         final boolean enabled = getIntent().getBooleanExtra("Enabled", true);
-        final int position = getIntent().getIntExtra("Position", 0);
+        final int position = getIntent().getIntExtra("Position", -1);
+        final String passcodeName = getIntent().getStringExtra("Name");
+        final String passcodeNumber = getIntent().getStringExtra("Number");
+        boolean[] days = getIntent().getBooleanArrayExtra("Days");
+        String startDate = getIntent().getStringExtra("startDate");
+        String endDate = getIntent().getStringExtra("endDate");
+        String startTime = getIntent().getStringExtra("startTime");
+        String endTime = getIntent().getStringExtra("endTime");
+
+        if (startDate != null) {
+            setDate1.setText(startDate);
+        }
+        if (endDate != null) {
+            setDate2.setText(endDate);
+        }
+        if (startTime != null) {
+            setTime1.setText(startTime);
+        }
+        if (endTime != null) {
+            setTime2.setText(endTime);
+        }
 
         dropDownMenu.setAdapter(adapter);
         //dropDownMenu.setSelection(0);
@@ -122,9 +193,9 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });*/
-        name.setText(getIntent().getStringExtra("Name"));
-        number.setText(getIntent().getStringExtra("Number"));
-        String type = getIntent().getStringExtra("Type");
+        name.setText(passcodeName);
+        number.setText(passcodeNumber);
+        type = getIntent().getStringExtra("Type");
         switch (type) {
             case "Permanent":
                 dropDownMenu.setSelection(0);
@@ -138,10 +209,51 @@ public class EditPasscodeActivity extends AppCompatActivity implements
             case "One_time":
                 dropDownMenu.setSelection(3);
             break;
-            default:
-               dropDownMenu.setSelection(0);
-            break;
         }
+
+        sun.setChecked(days[0]);
+        mon.setChecked(days[1]);
+        tues.setChecked(days[2]);
+        wed.setChecked(days[3]);
+        thurs.setChecked(days[4]);
+        fri.setChecked(days[5]);
+        sat.setChecked(days[6]);
+
+        setDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(EditPasscodeActivity.this, date1,
+                        calendar1.get(Calendar.YEAR), calendar1.get(Calendar.MONTH),
+                        calendar1.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        setDate2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(EditPasscodeActivity.this, date2,
+                        calendar2.get(Calendar.YEAR), calendar2.get(Calendar.MONTH),
+                        calendar2.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        setTime1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TimePickerDialog(EditPasscodeActivity.this, time1,
+                        calendar1.get(Calendar.HOUR_OF_DAY), calendar1.get(Calendar.MINUTE),
+                        true).show();
+            }
+        });
+
+        setTime2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TimePickerDialog(EditPasscodeActivity.this, time2,
+                        calendar2.get(Calendar.HOUR_OF_DAY), calendar2.get(Calendar.MINUTE),
+                        true).show();
+            }
+        });
 
         generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,15 +267,33 @@ public class EditPasscodeActivity extends AppCompatActivity implements
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if (!name.getText().toString().equals(getIntent().getStringExtra("Name"))) {
-                    //pass new parameters to passcode
-                }*/
-                //...And add passcode to
+                //...And add passcode to firebase?
                 PasscodeType codeType = PasscodeType.values()[dropDownMenu.getSelectedItemPosition()];
-                Model.permanentPasscodes.remove(position);
-                Model.permanentPasscodes.add(position, new Passcode(name.getText().toString(),
-                        usedCount, validPeriod, creationTime, enabled, number.getText().toString(),
-                        codeType));
+
+                boolean checked1 = sun.isChecked();
+                boolean checked2 = mon.isChecked();
+                boolean checked3 = tues.isChecked();
+                boolean checked4 = wed.isChecked();
+                boolean checked5 = thurs.isChecked();
+                boolean checked6 = fri.isChecked();
+                boolean checked7 = sat.isChecked();
+
+                if (position != -1) {
+                    Model.permanentPasscodes.remove(position);
+                }
+                Passcode newCode = new Passcode(name.getText().toString(),
+                        usedCount, creationTime, enabled, number.getText().toString(),
+                        codeType);
+                if (type.equals("Repeat")) {
+                    newCode.setDaysOfWeek(checked1, checked2, checked3,
+                            checked4, checked5, checked6, checked7);
+                } else if (type.equals("Temporary")) {
+                    newCode.setStartDate(setDate1.getText().toString());
+                    newCode.setEndDate(setDate2.getText().toString());
+                    newCode.setStartTime(setTime1.getText().toString());
+                    newCode.setEndTime(setTime2.getText().toString());
+                }
+                Model.permanentPasscodes.add(position, newCode);
 
                 SmartBoxApplication.getInstance().getLockApiService().getLockStatus("-LbK-7O_EJzc38A7E3-L");
                 //SmartBoxApplication.getInstance().getLockApiService().getLockList();
@@ -194,7 +324,7 @@ public class EditPasscodeActivity extends AppCompatActivity implements
         String item = parent.getItemAtPosition(index).toString();
 
         if(item.equals("Permanent")) {
-            type.setText("Permanent");
+            pType.setText("Permanent");
             description.setText("Passcode is permanent by default");
             notifyTitlePO.setVisibility(View.VISIBLE);
             notifyDescriptionPO.setVisibility(View.VISIBLE);
@@ -218,8 +348,9 @@ public class EditPasscodeActivity extends AppCompatActivity implements
             endTime.setVisibility(View.GONE);
             startDate.setVisibility(View.GONE);
             endDate.setVisibility(View.GONE);
+            type = "Permanent";
         } else if (item.equals("Temporary")) {
-            type.setText("Temporary");
+            pType.setText("Temporary");
             description.setText("Works over a period of time");
             notifyTitleTR.setVisibility(View.VISIBLE);
             notifyDescriptionTR.setVisibility(View.VISIBLE);
@@ -243,8 +374,9 @@ public class EditPasscodeActivity extends AppCompatActivity implements
             endTime.setVisibility(View.VISIBLE);
             startDate.setVisibility(View.VISIBLE);
             endDate.setVisibility(View.VISIBLE);
+            type = "Temporary";
         } else if (item.equals("Repeat")) {
-            type.setText("Repeat");
+            pType.setText("Repeat");
             description.setText("Repeated passcode repeats weekly");
             notifyTitleTR.setVisibility(View.VISIBLE);
             notifyDescriptionTR.setVisibility(View.VISIBLE);
@@ -268,8 +400,9 @@ public class EditPasscodeActivity extends AppCompatActivity implements
             endTime.setVisibility(View.GONE);
             startDate.setVisibility(View.GONE);
             endDate.setVisibility(View.GONE);
+            type = "Repeat";
         } else if (item.equals("One-time")) {
-            type.setText("One-time");
+            pType.setText("One-time");
             description.setText("One-time passcode expires after first usage");
             notifyTitlePO.setVisibility(View.VISIBLE);
             notifyDescriptionPO.setVisibility(View.VISIBLE);
@@ -293,6 +426,7 @@ public class EditPasscodeActivity extends AppCompatActivity implements
             endTime.setVisibility(View.GONE);
             startDate.setVisibility(View.GONE);
             endDate.setVisibility(View.GONE);
+            type = "One-time";
         }
     }
 

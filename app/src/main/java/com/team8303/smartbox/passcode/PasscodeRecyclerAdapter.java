@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.team8303.model.Passcode;
+import com.team8303.model.PasscodeType;
 import com.team8303.smartbox.R;
 import com.team8303.util.ItemClickedListener;
 
@@ -42,13 +43,27 @@ public class PasscodeRecyclerAdapter
     @Override public void onBindViewHolder(ViewHolder holder, int position) {
         Passcode current = list.get(position);
         holder.passcodeName.setText(current.getName());
-        holder.creationPeriod.setText("Created: " + current.getCreationTime());
-        holder.usedCount.setText("Used " + current.getUsedCount() + " time(s)");
+
+        //depending on passcode type different info showed for second line
+        if (current.getType().equals(PasscodeType.One_time) || current.getType().equals(PasscodeType.Permanent)) {
+            holder.creationPeriod.setText(current.getCreationTime());
+        } else {
+            holder.creationPeriod.setText(current.getValidPeriod());
+        }
+
+        holder.usedCount.setText(current.getUsedCount() + " time(s)");
         holder.toggle.setChecked(current.isEnabled());
     }
 
     @Override public int getItemCount() {
         return list.size();
+    }
+
+    public void setPasscodeList(List<Passcode> list) {
+        this.list = list;
+    }
+    public List<Passcode> getPasscodeList() {
+        return list;
     }
 
     public void setListener(ItemClickedListener<Passcode> listener) {
