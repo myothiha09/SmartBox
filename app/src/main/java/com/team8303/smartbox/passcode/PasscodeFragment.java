@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.team8303.smartbox.EditPasscodeActivity;
 import com.team8303.smartbox.R;
 import com.team8303.util.ItemClickedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindString;
@@ -42,7 +44,7 @@ public class PasscodeFragment extends Fragment {
     @BindString(R.string.one_time) String _one_time;
     public static PasscodeRecyclerAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-
+    private String currentTab = "Permanent";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,15 +58,23 @@ public class PasscodeFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 String title = tab.getText().toString();
                 if (title.equals(_permanent)) {
+                    currentTab = "Permanent";
+                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getPermanentPasscodes());
                 } else if (title.equals(_temp)) {
+                    currentTab = "Temporary";
+                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getTempPasscodes());
                 } else if (title.equals(_repeat)) {
+                    currentTab = "Repeat";
+                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getRepeatPasscodes());
                 } else if (title.equals(_one_time)) {
+                    currentTab = "One-Time";
+                    Log.d("Tag!","The current tab has changed to " + currentTab);
                    // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getOnePasscodes());
                 }
@@ -89,11 +99,22 @@ public class PasscodeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new PasscodeRecyclerAdapter(getContext(), Model.getPermanentPasscodes());
+        Log.d("Tag!","The current tab is " + currentTab);
+        List<Passcode> inputList = Model.getPermanentPasscodes();
+        if (currentTab.equals("Temporary")) {
+            inputList = Model.getTempPasscodes();
+        } else if (currentTab.equals("Repeat")) {
+            inputList = Model.getRepeatPasscodes();
+        } else if (currentTab.equals("One-Time")) {
+            inputList = Model.getOnePasscodes();
+        }
+        adapter = new PasscodeRecyclerAdapter(getContext(), inputList);
         adapter.setListener(new ItemClickedListener<Passcode>() {
-            final List<Passcode> list = adapter.getPasscodeList();
+            final List<Passcode> list = new ArrayList<>();
             @Override
             public void itemChosen(int position) {
+                list.clear();
+                list.addAll(adapter.getPasscodeList());
                 Passcode passcode = list.get(position);
                 //Toast.makeText(getContext(), passcode.getName() + " is clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), EditPasscodeActivity.class);

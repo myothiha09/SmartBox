@@ -47,9 +47,9 @@ public class PasscodeRecyclerAdapter
         //depending on passcode type different info showed for second line
         if (current.getType().equals(PasscodeType.One_time) || current.getType().equals(PasscodeType.Permanent)) {
             holder.creationPeriod.setText(current.getCreationTime());
-        } else {
+        }/* else {
             holder.creationPeriod.setText(current.getValidPeriod());
-        }
+        }*/
 
         holder.usedCount.setText(current.getUsedCount() + " time(s)");
         holder.toggle.setChecked(current.isEnabled());
