@@ -110,13 +110,12 @@ public class PasscodeFragment extends Fragment {
         }
         adapter = new PasscodeRecyclerAdapter(getContext(), inputList);
         adapter.setListener(new ItemClickedListener<Passcode>() {
-            final List<Passcode> list = new ArrayList<>();
+            List<Passcode> list = new ArrayList<>();
             @Override
             public void itemChosen(int position) {
-                list.clear();
-                list.addAll(adapter.getPasscodeList());
+                list = adapter.getPasscodeList();
                 Passcode passcode = list.get(position);
-                //Toast.makeText(getContext(), passcode.getName() + " is clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), passcode.getName() + " is clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), EditPasscodeActivity.class);
                 intent.putExtra("Name", passcode.getName());
                 intent.putExtra("Used Count", passcode.getUsedCount());
@@ -135,16 +134,13 @@ public class PasscodeFragment extends Fragment {
 
             @Override
             public void delItem(int position) {
-                list.clear();
-                list.addAll(adapter.getPasscodeList());
-                list.remove(position);
+                list = adapter.getPasscodeList();
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void toggleItem(int position) {
-                list.clear();
-                list.addAll(adapter.getPasscodeList());
+                list = adapter.getPasscodeList();
                 Passcode passcode = list.get(position);
 
                 boolean status = passcode.isEnabled();
