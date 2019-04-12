@@ -128,5 +128,6 @@ public class EditPasscodeActivity extends AppCompatActivity {
     }
     @OnClick(R.id.saveButton) void onSaveButtonClicked() {
         Toast.makeText(getApplicationContext(), "Save Button clicked", Toast.LENGTH_SHORT).show();
+        finish(); //can kill this activity to go back to previous activity. previous activity might need to use Android Lifecycle to refresh data.
     }
 }
