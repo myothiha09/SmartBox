@@ -78,7 +78,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,8 +110,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passcodeDescription">
 
-        <CheckBox
-            android:id="@+id/allDayCheckBox"
+        <RadioButton
+            android:id="@+id/allDayRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -130,7 +130,7 @@
             android:textColor="@android:color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/allDayCheckBox" />
+            app:layout_constraintTop_toBottomOf="@+id/allDayRadioButton" />
 
         <ImageView
             android:id="@+id/startDateButton"
@@ -171,7 +171,7 @@
             android:textColor="@android:color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/allDayCheckBox" />
+            app:layout_constraintTop_toBottomOf="@+id/allDayRadioButton" />
 
         <ImageView
             android:id="@+id/startTimeButton"
@@ -281,5 +281,19 @@
         app:layout_constraintBottom_toBottomOf="@+id/notiIcon"
         app:layout_constraintStart_toEndOf="@id/notiIcon"
         app:layout_constraintTop_toTopOf="@+id/notiIcon" />
+
+    <Button
+        android:id="@+id/saveButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Save"
+        android:textColor="@android:color/holo_blue_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

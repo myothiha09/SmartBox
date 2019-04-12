@@ -52,6 +52,7 @@ public class EditPasscodeActivity extends AppCompatActivity {
     @BindView(R.id.endDateText) TextView endDateText;
     @BindView(R.id.startTimeText) TextView startTimeText;
     @BindView(R.id.endTimeText) TextView endTimeText;
+    @BindView(R.id.allDayRadioButton) RadioButton allDayRadioButton;
 
     //checkboxes for Repeat
     @BindView(R.id.sundayCheckbox) CheckBox sunCheckbox;
@@ -61,6 +62,7 @@ public class EditPasscodeActivity extends AppCompatActivity {
     @BindView(R.id.thurCheckbox) CheckBox thursCheckbox;
     @BindView(R.id.friCheckbox) CheckBox friCheckbox;
     @BindView(R.id.satCheckbox) CheckBox satCheckbox;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,5 +125,8 @@ public class EditPasscodeActivity extends AppCompatActivity {
         int randcode = new Random().nextInt(999999);
         String str = String.format("%06d", randcode);
         passcodeInput.setText(str);
+    }
+    @OnClick(R.id.saveButton) void onSaveButtonClicked() {
+        Toast.makeText(getApplicationContext(), "Save Button clicked", Toast.LENGTH_SHORT).show();
     }
 }
