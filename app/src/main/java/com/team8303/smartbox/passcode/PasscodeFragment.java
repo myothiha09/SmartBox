@@ -135,11 +135,16 @@ public class PasscodeFragment extends Fragment {
 
             @Override
             public void delItem(int position) {
-                return;
+                list.clear();
+                list.addAll(adapter.getPasscodeList());
+                list.remove(position);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void toggleItem(int position) {
+                list.clear();
+                list.addAll(adapter.getPasscodeList());
                 Passcode passcode = list.get(position);
 
                 boolean status = passcode.isEnabled();
