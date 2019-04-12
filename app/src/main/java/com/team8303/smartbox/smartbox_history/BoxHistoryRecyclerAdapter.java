@@ -6,13 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import com.saber.stickyheader.stickyView.StickHeaderRecyclerView;
+import com.team8303.model.Utils;
 import com.team8303.smartbox.R;
+
+import java.util.concurrent.locks.Lock;
 
 /**
  * Created by Myo on 5/25/2017.
@@ -69,11 +74,16 @@ public class BoxHistoryRecyclerAdapter extends StickHeaderRecyclerView<BoxHistor
         @BindView(R.id.lockStatus)
         TextView lockStatus;
         @BindView(R.id.time)
-        TextView Time;
+        TextView time;
         @BindView(R.id.expand)
         ImageView expand;
-        @BindView(R.id.lock_status)
+        @BindView(R.id.lockStatusIcon)
         ImageView lockStatusIcon;
+        @BindView(R.id.expanded_info)
+        LinearLayout expandedInfo;
+
+        @BindView(R.id.inputPasscode) TextView inputPasscode;
+        @BindView(R.id.inputPasscodeType) TextView inputPasscodeType;
 
         ViewHolder(View view) {
             super(view);
@@ -83,6 +93,34 @@ public class BoxHistoryRecyclerAdapter extends StickHeaderRecyclerView<BoxHistor
         void bindData(int position) {
             BoxHistoryItem item = getDataInPosition(position);
             unlocker.setText(item.getUnlocker());
+            time.setText(item.getTime());
+            LockStatus currLockStatus = item.getLockStatus();
+            lockStatus.setText(currLockStatus.toString());
+
+            if (currLockStatus.equals(LockStatus.LOCKED)) {
+                lockStatusIcon.setImageResource(R.drawable.ic_lock_black_24dp);
+            } else if (currLockStatus.equals(LockStatus.ATTEMPTED_UNLOCK)) {
+                lockStatusIcon.setImageResource(R.drawable.ic_lock_red_24dp);
+            } else {
+                lockStatusIcon.setImageResource(R.drawable.ic_lock_open_blue_24dp);
+            }
+            if (item.isExpanded()) {
+                expand.setImageResource(R.drawable.ic_expand_less_black_24dp);
+                expandedInfo.setVisibility(View.VISIBLE);
+                inputPasscode.setText("Passcode: " + (currLockStatus.equals(LockStatus.LOCKED) ? "N/A" : item.getPasscode().getNumber()));
+                inputPasscodeType.setText("Passcode Type: " + (currLockStatus.equals(LockStatus.UNLOCKED) ? item.getPasscode().getType().name() : "N/A"));
+            } else {
+                expand.setImageResource(R.drawable.ic_expand_more_black_24dp);
+                expandedInfo.setVisibility(View.GONE);
+            }
+
+        }
+
+        @OnClick (R.id.expand) void onClick() {
+            int position = getAdapterPosition();
+            BoxHistoryItem item = getDataInPosition(position);
+            item.toggleExpanded();
+            notifyItemChanged(position);
         }
     }
 }

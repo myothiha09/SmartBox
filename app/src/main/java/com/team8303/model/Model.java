@@ -1,6 +1,7 @@
 package com.team8303.model;
 
 import com.team8303.smartbox.smartbox_history.BoxHistoryItem;
+import com.team8303.smartbox.smartbox_history.LockStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,33 +46,19 @@ public class Model {
                 false, "503214", PasscodeType.One_time));
 
         List<BoxHistoryItem> items = new ArrayList<>();
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
+
+        //passcode only needs passcode number and passcode type
+        items.add(new BoxHistoryItem("March 31 2019", "4:01 PM", LockStatus.LOCKED, "Box", permanentPasscodes.get(0)));
+        items.add(new BoxHistoryItem("March 31 2019", "3:59 PM", LockStatus.UNLOCKED, "Box", permanentPasscodes.get(1)));
 
         boxHistory.put("March 31 2019", items);
 
         items = new ArrayList<>();
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
+        items.add(new BoxHistoryItem("March 30 2019", "3:59 PM", LockStatus.LOCKED, "UPS", tempPasscodes.get(1))); //don't need passcode to lock but placed as placeholder
+        items.add(new BoxHistoryItem("March 30 2019", "3:58 PM", LockStatus.UNLOCKED, "UPS", tempPasscodes.get(0)));
+        items.add(new BoxHistoryItem("March 30 2019", "3:52 PM", LockStatus.ATTEMPTED_UNLOCK, "UPS", tempPasscodes.get(1)));
 
         boxHistory.put("March 30 2019", items);
-
-        items = new ArrayList<>();
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-        items.add(new BoxHistoryItem());
-
-        boxHistory.put("March 20 2019", items);
     }
 
     public static User getUserInfo() {

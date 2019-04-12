@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.team8303.model.Model;
 import com.team8303.model.User;
+import com.team8303.model.Utils;
 import com.team8303.smartbox.R;
 
 import butterknife.BindView;
@@ -41,17 +42,15 @@ public class UserProfileFragment extends Fragment {
         ButterKnife.bind(this, view);
         User user = Model.getUserInfo();
         name.setText(user.getName());
-        username.setText(getFormatted(username, user.getUsername()));
-        smartboxCount.setText(getFormatted(smartboxCount, user.getActiveCount() + ""));
-        dateRegistered.setText(getFormatted(dateRegistered, user.getDate_registered()));
-        phoneNum.setText(getFormatted(phoneNum, user.getPhoneNumber()));
-        email.setText(getFormatted(email, user.getEmail()));
+        username.setText(Utils.getFormatted(username, user.getUsername()));
+        smartboxCount.setText(Utils.getFormatted(smartboxCount, user.getActiveCount() + ""));
+        dateRegistered.setText(Utils.getFormatted(dateRegistered, user.getDate_registered()));
+        phoneNum.setText(Utils.getFormatted(phoneNum, user.getPhoneNumber()));
+        email.setText(Utils.getFormatted(email, user.getEmail()));
 
         return view;
     }
-    public String getFormatted(TextView textView, String data) {
-        return textView.getText() + ": " + data;
-    }
+
 
     @OnClick(R.id.change_password_button) void changePassword() {
         Toast.makeText(getContext(), "Change password clicked", Toast.LENGTH_SHORT).show();
