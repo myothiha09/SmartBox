@@ -7,6 +7,7 @@ import com.team8303.api.model.UserLockResponse;
 import com.team8303.api.model.UserLockStatusResponse;
 import com.team8303.events.LockListEvent;
 import com.team8303.events.LockStatusEvent;
+import com.team8303.events.PostLockEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -70,10 +71,8 @@ public class LockApiService {
                 });
     }
 
-    public void addLocks(List<String> lockIds) {
-        UserLockResponse request = new UserLockResponse();
-        request.setOwnedLockIds(lockIds);
-        SmartBoxApplication.getInstance().getService().updateOwnedLock(request)
+    public void postLock(UserLockResponse ownedLockIds) {
+        SmartBoxApplication.getInstance().getService().postLock(ownedLockIds)
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Response<UserLockResponse>>() {
@@ -88,10 +87,14 @@ public class LockApiService {
                     }
 
                     @Override
-                    public void onNext(Response<UserLockResponse> userLockResponseResponse) {
-
+                    public void onNext(Response<UserLockResponse> userLockResponse) {
+                        if (userLockResponse.isSuccessful()) {
+                            EventBus.getDefault().postSticky(new PostLockEvent(userLockResponse.body(), true));
+                        } else {
+                            EventBus.getDefault().postSticky(new PostLockEvent(null, false));
+                        }
                     }
                 });
-
     }
+
 }

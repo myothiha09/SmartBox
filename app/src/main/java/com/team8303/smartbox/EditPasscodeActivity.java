@@ -16,8 +16,10 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.gson.annotations.SerializedName;
 import com.team8303.SmartBoxApplication;
 import com.team8303.api.ApiService;
+import com.team8303.api.model.PutLockStatusArgs;
 import com.team8303.api.model.UserLockResponse;
 import com.team8303.events.LockListEvent;
 import com.team8303.model.Model;
@@ -165,8 +167,16 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                         usedCount, validPeriod, creationTime, enabled, number.getText().toString(),
                         codeType));
 
-                SmartBoxApplication.getInstance().getLockApiService().getLockStatus("-LbK-7O_EJzc38A7E3-L");
+                //SmartBoxApplication.getInstance().getLockApiService().getLockStatus("-LbK-7O_EJzc38A7E3-L");
                 //SmartBoxApplication.getInstance().getLockApiService().getLockList();
+                UserLockResponse x = new UserLockResponse();
+                List<String> xList = new ArrayList<String>();
+                xList.add("-LbK-7O_EJzc38A7E3-L");
+                //x.setOwnedLockIds(xList);
+                x.setOwnedLockIds(xList);
+                SmartBoxApplication.getInstance().getLockApiService().postLock(x);
+                PutLockStatusArgs y = new PutLockStatusArgs();
+                y.setLockStatusArgs("123456", "OPEN");
             }
         });
     }
