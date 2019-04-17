@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.google.gson.annotations.SerializedName;
 import com.team8303.SmartBoxApplication;
 import com.team8303.api.ApiService;
+import com.team8303.api.model.PostLockPasswordArgs;
+import com.team8303.api.model.PutLockPasswordArgs;
 import com.team8303.api.model.PutLockStatusArgs;
 import com.team8303.api.model.UserLockResponse;
 import com.team8303.events.LockListEvent;
@@ -34,8 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import retrofit2.http.Body;
+import retrofit2.http.Path;
 import rx.Observer;
 import rx.schedulers.Schedulers;
+
 
 public class EditPasscodeActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener{
@@ -171,12 +176,26 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                 //SmartBoxApplication.getInstance().getLockApiService().getLockList();
                 UserLockResponse x = new UserLockResponse();
                 List<String> xList = new ArrayList<String>();
-                xList.add("-LbK-7O_EJzc38A7E3-L");
+                //xList.add("-LbK-7O_EJzc38A7E3-L");
+                String lockId = "-LbK-7O_EJzc38A7E3-L";
                 //x.setOwnedLockIds(xList);
-                x.setOwnedLockIds(xList);
-                SmartBoxApplication.getInstance().getLockApiService().postLock(x);
+                //x.setOwnedLockIds(xList);
+                //SmartBoxApplication.getInstance().getLockApiService().postLock(x);
                 PutLockStatusArgs y = new PutLockStatusArgs();
-                y.setLockStatusArgs("123456", "OPEN");
+
+                y.setLockStatusArgs("123456", "OPEN_REQUESTED");
+                PostLockPasswordArgs z = new PostLockPasswordArgs();
+                Long longNum = new Long(-1);
+                z.setPostLockPasswordArgs(xList, xList, -1, "246899", "OTP");
+                PutLockPasswordArgs a = new PutLockPasswordArgs();
+                a.setLockPasswordArgs(xList, xList, -1, "123456");
+                //SmartBoxApplication.getInstance().getLockApiService().updateLockStatus(lockId, y);
+                //SmartBoxApplication.getInstance().getLockApiService().deleteLockId(lockId);
+                //SmartBoxApplication.getInstance().getLockApiService().getLockHistory(lockId);
+                //SmartBoxApplication.getInstance().getLockApiService().getPasswordData(lockId);
+                //SmartBoxApplication.getInstance().getLockApiService().postLockPassword(lockId, z);
+                //SmartBoxApplication.getInstance().getLockApiService().getLockPasswordData(lockId, "-LcUcNZ4uX5eLdDevpQN");
+                SmartBoxApplication.getInstance().getLockApiService().putLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN", a);
             }
         });
     }

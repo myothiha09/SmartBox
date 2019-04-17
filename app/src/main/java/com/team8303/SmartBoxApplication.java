@@ -40,7 +40,7 @@ public class SmartBoxApplication extends Application {
 //                }
 //        ).addInterceptor(new StethoInterceptor())
         .build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://2de7e104.ngrok.io/")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://45989972.ngrok.io/")
 
 //                .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
