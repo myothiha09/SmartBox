@@ -195,7 +195,9 @@ public class EditPasscodeActivity extends AppCompatActivity implements
                 //SmartBoxApplication.getInstance().getLockApiService().getPasswordData(lockId);
                 //SmartBoxApplication.getInstance().getLockApiService().postLockPassword(lockId, z);
                 //SmartBoxApplication.getInstance().getLockApiService().getLockPasswordData(lockId, "-LcUcNZ4uX5eLdDevpQN");
-                SmartBoxApplication.getInstance().getLockApiService().putLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN", a);
+                //SmartBoxApplication.getInstance().getLockApiService().putLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN", a);
+               // SmartBoxApplication.getInstance().getLockApiService().deleteLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN");
+                SmartBoxApplication.getInstance().getLockApiService().postUserInfo();
             }
         });
     }

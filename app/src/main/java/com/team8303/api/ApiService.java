@@ -3,11 +3,13 @@ package com.team8303.api;
 import com.team8303.api.model.LockHistoryResponse;
 import com.team8303.api.model.LockPasswordResponse;
 import com.team8303.api.model.LockPasswordsResponse;
+import com.team8303.api.model.NoResponse;
 import com.team8303.api.model.PostLockPasswordArgs;
 import com.team8303.api.model.PutLockPasswordArgs;
 import com.team8303.api.model.PutLockStatusArgs;
 import com.team8303.api.model.UserLockResponse;
 import com.team8303.api.model.UserLockStatusResponse;
+import com.team8303.api.model.UserResponse;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -20,7 +22,7 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 public interface ApiService {
-    String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjVmYjMyOWRmNjdiYjY4NDVkNDk1NDNiMGM0OWIzNWM4ODg1NzllYmEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSmVyZW15IEFndWlsb24iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDQuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy05T1Z3OFpOcF9xUS9BQUFBQUFBQUFBSS9BQUFBQUFBQUUzYy83VDg4eERfSEZHYy9waG90by5qcGciLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vanVuaW9yLWRlc2lnbi1zbWFydC1sb2NrIiwiYXVkIjoianVuaW9yLWRlc2lnbi1zbWFydC1sb2NrIiwiYXV0aF90aW1lIjoxNTU1NDg1NTI0LCJ1c2VyX2lkIjoiWTdkeXFZVE1ZSU1iVXdIWFR5Z1RIdHBoekFoMiIsInN1YiI6Ilk3ZHlxWVRNWUlNYlV3SFhUeWdUSHRwaHpBaDIiLCJpYXQiOjE1NTU0ODU1MjUsImV4cCI6MTU1NTQ4OTEyNSwiZW1haWwiOiJqZXJhZ3VpbG9uQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTA4OTQ3MzM1MzY3OTg0OTAzNzMzIl0sImVtYWlsIjpbImplcmFndWlsb25AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.iWegdihBEEG_swVjrk4vM4EN5iqROu7ZHBO33ATCWEKIl_VVv-jlDMZX9WuRkFXCPboa5kaQ4GveeqZs3E9QLG7U4Ka7AgodT_9K8_eWkdrO1XDEb5p75CJIMX0Bqa9CrcA43wGsWohy0dIz2cJALmV8ubZzDJjVC-ZNVx1o9cwMmCzuncy9DMxSQObojEVr5l0WTOBdFOe8rnu4BYrwfsZZOkOWhays_Oxp0VJ3H6LqGLgeCw6TD_sFFcjlYJn0UXbg-NyIsvypHykLhXWRqQ9zUuxCUXZYeVC03I5uWOYzqK1SA89uEmSzgqc80pNPTjsZ63CU6YR5afjRQJ6bFA";
+    String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjVmYjMyOWRmNjdiYjY4NDVkNDk1NDNiMGM0OWIzNWM4ODg1NzllYmEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSmVyZW15IEFndWlsb24iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDQuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy05T1Z3OFpOcF9xUS9BQUFBQUFBQUFBSS9BQUFBQUFBQUUzYy83VDg4eERfSEZHYy9waG90by5qcGciLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vanVuaW9yLWRlc2lnbi1zbWFydC1sb2NrIiwiYXVkIjoianVuaW9yLWRlc2lnbi1zbWFydC1sb2NrIiwiYXV0aF90aW1lIjoxNTU1NTQxNTYwLCJ1c2VyX2lkIjoiWTdkeXFZVE1ZSU1iVXdIWFR5Z1RIdHBoekFoMiIsInN1YiI6Ilk3ZHlxWVRNWUlNYlV3SFhUeWdUSHRwaHpBaDIiLCJpYXQiOjE1NTU1NDE1NjAsImV4cCI6MTU1NTU0NTE2MCwiZW1haWwiOiJqZXJhZ3VpbG9uQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTA4OTQ3MzM1MzY3OTg0OTAzNzMzIl0sImVtYWlsIjpbImplcmFndWlsb25AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.e9gPBf-TYyz0N2HOWpMbGLL5MX1sZ5mTxLLYQCONRT_MXUjhQYrleulW8xlAKpJ6lla_bfs7bmqbLFC7LhtNiHF-wKFpcXzg-VF03woEjXHXK-SoUkvrsupgU1yXWYi6867_jx-_XEuntZO4LwgcjlHFWboTX0V6tuqVKfSbLo4peHCfQCBGsav8yo5cyyxXSThTWLV_j2PfC9YxH_9PeG3suj-pIZBp7fBGCAVWLKDuMgloD-bq72O0YnS88o_IrZFoSp7vb2s2mnL4TLaQce0yKH88gChmbsgB6Y1zUS5gN_UW_WGl5gQCbDsx72UvlBy1f2PP5mzySXq4761zVg";
 
     @GET("api/v1/locks")
     @Headers("Authorization: " +
@@ -68,7 +70,15 @@ public interface ApiService {
 
     @DELETE("api/v1/locks/{lockId}/passwords/{passwordId}")
     @Headers("Authorization: " + token)
-    public Observable<> deleteLockPassword
+    public Observable<Response<NoResponse>> deleteLockPassword(@Path("lockId") String lockId, @Path("passwordId") String passwordId);
+
+    @GET("api/v1/user")
+    @Headers("Authorization: " + token)
+    public Observable<Response<UserResponse>> getUserInfo();
+
+    @POST("api/v1/user")
+    @Headers("Authorization: " + token)
+    public Observable<Response<UserResponse>> postUserInfo();
 
 
 

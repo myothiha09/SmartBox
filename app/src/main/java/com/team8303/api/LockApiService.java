@@ -6,15 +6,19 @@ import com.team8303.SmartBoxApplication;
 import com.team8303.api.model.LockHistoryResponse;
 import com.team8303.api.model.LockPasswordResponse;
 import com.team8303.api.model.LockPasswordsResponse;
+import com.team8303.api.model.NoResponse;
 import com.team8303.api.model.PostLockPasswordArgs;
 import com.team8303.api.model.PutLockPasswordArgs;
 import com.team8303.api.model.UserLockResponse;
 import com.team8303.api.model.UserLockStatusResponse;
 import com.team8303.api.model.PutLockStatusArgs;
 import com.team8303.api.model.PutUserLockStatusResponse;
+import com.team8303.api.model.UserResponse;
 import com.team8303.events.DeleteLockIdEvent;
+import com.team8303.events.DeleteLockPasswordEvent;
 import com.team8303.events.GetLockHistoryEvent;
 import com.team8303.events.GetPasswordDataEvent;
+import com.team8303.events.GetUserInfoEvent;
 import com.team8303.events.LockListEvent;
 import com.team8303.events.LockStatusEvent;
 import com.team8303.events.PostLockEvent;
@@ -286,6 +290,84 @@ public class LockApiService {
                             EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
                         } else {
                             EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
+                        }
+                    }
+                });
+    }
+
+    public void deleteLockPassword(String lockId, String passwordId) {
+        SmartBoxApplication.getInstance().getService().deleteLockPassword(lockId, passwordId)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Response<NoResponse>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<NoResponse> lockPasswordResponse) {
+                        if (lockPasswordResponse.isSuccessful()) {
+                            EventBus.getDefault().postSticky(new DeleteLockPasswordEvent(lockPasswordResponse.body(), true));
+                        } else {
+                            EventBus.getDefault().postSticky(new DeleteLockPasswordEvent(null, false));
+                        }
+                    }
+                });
+    }
+
+    public void getUserInfo() {
+        SmartBoxApplication.getInstance().getService().getUserInfo()
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Response<UserResponse>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<UserResponse> userResponse) {
+                        if (userResponse.isSuccessful()) {
+                            EventBus.getDefault().postSticky(new GetUserInfoEvent(userResponse.body(), true));
+                        } else {
+                            EventBus.getDefault().postSticky(new GetUserInfoEvent(null, false));
+                        }
+                    }
+                });
+    }
+
+    public void postUserInfo() {
+        SmartBoxApplication.getInstance().getService().postUserInfo()
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Response<UserResponse>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<UserResponse> userResponse) {
+                        if (userResponse.isSuccessful()) {
+                            EventBus.getDefault().postSticky(new GetUserInfoEvent(userResponse.body(), true));
+                        } else {
+                            EventBus.getDefault().postSticky(new GetUserInfoEvent(null, false));
                         }
                     }
                 });
