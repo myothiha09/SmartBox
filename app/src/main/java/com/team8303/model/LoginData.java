@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class LoginData {
 
     private static ArrayList<User> userInfo = new ArrayList<>();
-    private static final User first = new User("name", "user","pass",UserType.USER,"", "");
+    private static final User first = new User("name", "user","pass",UserType.USER,"", "", 0, "");
 
 
     //private Context context; WARNING!!!! Never store Contexts. They were not meant to be stored.
@@ -94,7 +94,7 @@ public class LoginData {
     }
 
     public static void addUser(String name, String user, String pass, UserType type, String number, String email) {
-        User newser = new User(name,user,pass,type,number, email);
+        User newser = new User(name,user,pass,type,number, email, 0, ""); //I added active count attribute and date_registered since they were in account profile screeen.
         userInfo.add(newser);
         /*I've been storing registered users in this userInfo ArrayList, which isn't linked
         to the database, but is easier to work with. I can't write to db, because doing so

@@ -7,6 +7,25 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TabItem android:text="@string/permanent" />
+
+        <android.support.design.widget.TabItem android:text="@string/temp" />
+
+        <android.support.design.widget.TabItem android:text="@string/repeat" />
+
+        <android.support.design.widget.TabItem android:text="@string/one_time" />
+
+    </android.support.design.widget.TabLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/passcode_recycler_view"
         android:layout_width="0dp"
@@ -15,7 +34,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -1,20 +1,30 @@
 package com.team8303.smartbox;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.EventLog;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.gson.annotations.SerializedName;
 import com.team8303.SmartBoxApplication;
@@ -33,9 +43,22 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class EditPasscodeActivity extends AppCompatActivity {
+    @BindView(R.id.passcodeSpinner) Spinner passcodeTypeSpinner;
+    @BindView(R.id.repeatContainer) View repeatContainer;
+    @BindView(R.id.tempContainer) View tempContainer;
+    @BindView(R.id.passcodeDescription) TextView passcodeDescription;
+    @BindView(R.id.passcodeInput) EditText passcodeInput;
+    @BindView(R.id.passcodeNameInput) EditText passcodeNameInput;
 import retrofit2.http.Body;
 import retrofit2.http.Path;
 import rx.Observer;
@@ -45,112 +68,62 @@ import rx.schedulers.Schedulers;
 public class EditPasscodeActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener{
 
-    TextView passcodeNameText;
-    EditText name;
-    EditText number;
-    Button generateButton;
-    TextView type;
-    Spinner dropDownMenu;
-    TextView description;
-    TextView notifyTitlePO, notifyDescriptionPO;
-    Switch setNotificationsPO;
-    TextView notifyTitleTR, notifyDescriptionTR;
-    Switch setNotificationsTR;
-    CheckBox sun, mon, tues, wed, thurs, fri, sat;
-    Button saveButton;
-    EditText setDate1, setDate2, setTime1, setTime2;
-    TextView startDate, endDate, startTime, endTime;
-    RadioButton allDay;
+    //labels to be used with Date/Time Chooser
+    @BindView(R.id.startDateText) TextView startDateText;
+    @BindView(R.id.endDateText) TextView endDateText;
+    @BindView(R.id.startTimeText) TextView startTimeText;
+    @BindView(R.id.endTimeText) TextView endTimeText;
+    @BindView(R.id.allDayRadioButton) RadioButton allDayRadioButton;
+
+    //checkboxes for Repeat
+    @BindView(R.id.sundayCheckbox) CheckBox sunCheckbox;
+    @BindView(R.id.monCheckbox) CheckBox monCheckbox;
+    @BindView(R.id.tuesCheckbox) CheckBox tuesCheckbox;
+    @BindView(R.id.wedCheckbox) CheckBox wedCheckbox;
+    @BindView(R.id.thurCheckbox) CheckBox thursCheckbox;
+    @BindView(R.id.friCheckbox) CheckBox friCheckbox;
+    @BindView(R.id.satCheckbox) CheckBox satCheckbox;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_passcode);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        passcodeNameText = findViewById(R.id.passcodeNameText);
-        name = findViewById(R.id.passcodeName);
-        number = findViewById(R.id.passcodeNumber);
-        generateButton = findViewById(R.id.generateButton);
-        type = findViewById(R.id.passcodeType);
-        dropDownMenu = findViewById(R.id.dropDownMenu);
-        description = findViewById(R.id.passcodeDescription);
-        notifyTitlePO = findViewById(R.id.notifications1);
-        notifyDescriptionPO = findViewById(R.id.notificationDescription1);
-        setNotificationsPO = findViewById(R.id.notificationSwitch1);
-        notifyTitleTR = findViewById(R.id.notifications2);
-        notifyDescriptionTR = findViewById(R.id.notificationDescription2);
-        setNotificationsTR = findViewById(R.id.notificationSwitch2);
-        sun = findViewById(R.id.sun);
-        mon = findViewById(R.id.mon);
-        tues = findViewById(R.id.tues);
-        wed = findViewById(R.id.wed);
-        thurs = findViewById(R.id.thur);
-        fri = findViewById(R.id.fri);
-        sat = findViewById(R.id.sat);
-        allDay = findViewById(R.id.daySwitch);
-        setDate1 = findViewById(R.id.calendar1);
-        setDate2 = findViewById(R.id.calendar2);
-        setTime1 = findViewById(R.id.time1);
-        setTime2 = findViewById(R.id.time2);
-        startDate = findViewById(R.id.startDate);
-        endDate = findViewById(R.id.endDate);
-        startTime = findViewById(R.id.startTime);
-        endTime = findViewById(R.id.endTime);
-        saveButton = findViewById(R.id.saveButton);
-
-        dropDownMenu.setOnItemSelectedListener(this);
-
-        List<String> passcodeTypes = new ArrayList<>();
-        passcodeTypes.add("Permanent");
-        passcodeTypes.add("Temporary");
-        passcodeTypes.add("Repeat");
-        passcodeTypes.add("One-time");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_dropdown_item, passcodeTypes);
-
-        final int usedCount = getIntent().getIntExtra("Used Count", 0);
-        final String validPeriod = getIntent().getStringExtra("Valid Period");
-        final String creationTime = getIntent().getStringExtra("Creation Time");
-        final boolean enabled = getIntent().getBooleanExtra("Enabled", true);
-        final int position = getIntent().getIntExtra("Position", 0);
-
-        dropDownMenu.setAdapter(adapter);
-        //dropDownMenu.setSelection(0);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        ButterKnife.bind(this);
+        initSpinner();
+    }
+    public void initSpinner() {
+        final List<PasscodeType> passcodeTypes = new ArrayList<>();
+        passcodeTypes.add(PasscodeType.Permanent);
+        passcodeTypes.add(PasscodeType.Temporary);
+        passcodeTypes.add(PasscodeType.Repeat);
+        passcodeTypes.add(PasscodeType.One_time);
+        ArrayAdapter<PasscodeType> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, passcodeTypes);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        passcodeTypeSpinner.setAdapter(dataAdapter);
+        passcodeTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                PasscodeType passcodeType = passcodeTypes.get(i);
+                if (passcodeType == PasscodeType.Permanent) {
+                    passcodeDescription.setText(R.string.permanent_description);
+                    repeatContainer.setVisibility(View.GONE);
+                    tempContainer.setVisibility(View.GONE);
+                } else if (passcodeType == PasscodeType.Temporary) {
+                    passcodeDescription.setText(R.string.temporary_description);
+                    tempContainer.setVisibility(View.VISIBLE);
+                    repeatContainer.setVisibility(View.GONE);
+                } else if (passcodeType == PasscodeType.Repeat) {
+                    passcodeDescription.setText(R.string.repeat_description);
+                    repeatContainer.setVisibility(View.VISIBLE);
+                    tempContainer.setVisibility(View.GONE);
+                } else if (passcodeType == PasscodeType.One_time) {
+                    passcodeDescription.setText(R.string.onetime_description);
+                    repeatContainer.setVisibility(View.GONE);
+                    tempContainer.setVisibility(View.GONE);
+                }
             }
-        });*/
-        name.setText(getIntent().getStringExtra("Name"));
-        number.setText(getIntent().getStringExtra("Number"));
-        String type = getIntent().getStringExtra("Type");
-        switch (type) {
-            case "Permanent":
-                dropDownMenu.setSelection(0);
-            break;
-            case "Temporary":
-                dropDownMenu.setSelection(1);
-            break;
-            case "Repeat":
-                dropDownMenu.setSelection(2);
-            break;
-            case "One_time":
-                dropDownMenu.setSelection(3);
-            break;
-            default:
-               dropDownMenu.setSelection(0);
-            break;
-        }
 
-        generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int randcode = new Random().nextInt(999999);
@@ -326,9 +299,4 @@ public class EditPasscodeActivity extends AppCompatActivity implements
             endDate.setVisibility(View.GONE);
         }
     }
-
-    public void onNothingSelected(AdapterView<?> arg0) {
-
-    }
-
 }
