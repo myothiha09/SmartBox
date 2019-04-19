@@ -11,10 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.team8303.model.Model;
 import com.team8303.smartbox.passcode.PasscodeFragment;
 import com.team8303.smartbox.smartbox_history.BoxHistoryFragment;
+import com.team8303.smartbox.smartbox_users.BoxUsersFragment;
 import com.team8303.smartbox.user_profile.UserProfileFragment;
 
 import butterknife.ButterKnife;
@@ -89,24 +91,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_box) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new PasscodeFragment())
+                    .replace(R.id.container, new BoxUsersFragment())
                     .addToBackStack(null)
                     .commit();
-        } else if (id == R.id.nav_gallery) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new BoxHistoryFragment())
-                    .addToBackStack(null)
-                    .commit();
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.log_out) {
+            Toast.makeText(getApplicationContext(), "Log out clicked", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

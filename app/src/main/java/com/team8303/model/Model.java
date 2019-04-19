@@ -2,6 +2,7 @@ package com.team8303.model;
 
 import com.team8303.smartbox.smartbox_history.BoxHistoryItem;
 import com.team8303.smartbox.smartbox_history.LockStatus;
+import com.team8303.smartbox.smartbox_users.BoxUsersItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class Model {
     public static List<Passcode> repeatPasscodes = new ArrayList<>();
 
     public static HashMap<String, List<BoxHistoryItem>> boxHistory = new LinkedHashMap<>();
+    public static HashMap<UserType, List<BoxUsersItem>> boxUsers = new LinkedHashMap<>();
 
     public static User user = new User("George Burdell", "buzzrox", "", UserType.USER, "678-136-7092", "buzz@gg.com", 1, "3/31/2019");
 
@@ -59,8 +61,26 @@ public class Model {
         items.add(new BoxHistoryItem("March 30 2019", "3:52 PM", LockStatus.ATTEMPTED_UNLOCK, "UPS", tempPasscodes.get(1)));
 
         boxHistory.put("March 30 2019", items);
+
+        List<BoxUsersItem> items2 = new ArrayList<>();
+        items2.add(new BoxUsersItem(UserType.ADMINISTRATOR, "George Burdell"));
+
+        boxUsers.put(UserType.ADMINISTRATOR, items2);
+
+        items2 = new ArrayList<>();
+
+        items2.add(new BoxUsersItem(UserType.USER, "Buzz"));
+        items2.add(new BoxUsersItem(UserType.USER, "Bee"));
+
+        boxUsers.put(UserType.USER, items2);
     }
 
+    public static HashMap<UserType, List<BoxUsersItem>> getBoxUsers() {
+        if (USE_MOCK) {
+            return boxUsers;
+        }
+        return boxUsers;
+    }
     public static User getUserInfo() {
         if (USE_MOCK) {
             return user;
