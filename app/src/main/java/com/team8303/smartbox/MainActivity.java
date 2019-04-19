@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_box) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new BoxUsersFragment())
+                    .replace(R.id.container, new LockManagementFragment())
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.log_out) {
