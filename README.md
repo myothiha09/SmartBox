@@ -42,7 +42,7 @@ In addition, the software depends on three cloud-based services to operate:
         * Python 3.6 or 3.7
         * [Python Virtualenv](https://docs.python-guide.org/dev/virtualenvs/) (Used to setup an environment to install Python dependencies)
         * [Python Pip](https://pypi.org/project/pip/) (Used to auto-install all Python dependencies, )
-            * Major dependencies include Flask, Pyrebase, and bcrypt
+            * Major dependencies include Flask, Pyrebase, and bcrypt. A complete list of dependencies can be found [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/requirements.txt).
         * [Node Package Manager (NPM)](https://www.npmjs.com/get-npm)
     * Hardware
         * Base64
@@ -60,7 +60,7 @@ In addition, the software depends on three cloud-based services to operate:
 * For Raspberry code:
     * Run the python script called control.py.
 * For Backend code:
-    * Running the server depends heavily on the operating system. Follow the instructions [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md) for your OS.
+    * Almost all build components are automated during installation except for extremely security-sensitive environment variables. Follow the prerequisites [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md#prerequisites) to set these variables.
 
 **Installation**
 * For Android:
@@ -70,7 +70,7 @@ In addition, the software depends on three cloud-based services to operate:
     * Run `sudo nano /etc/rc.local`.
     * Add a line to run the python script. Append ‘ &’ to the line.
 * For Backend: 
-    * After installing the prerequisite packages (Python Pip, Virtualenv, and NPM), Follow the instructions found [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md).
+    * After installing the prerequisite packages (Python Pip, Virtualenv, and NPM) and setting up environment variables, follow the installation instructions [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md#linuxmacos).
 
 
 **Run Instructions**
@@ -80,8 +80,9 @@ In addition, the software depends on three cloud-based services to operate:
     * The repository comes with a .sh file that is compatible with UNIX systems:
         * Run the server: `chmod +x dev_flask.sh && ./dev_flask.sh`
         * Run the tests: `chmod +x run_tests.sh && ./run_tests.sh`
+    * To manually play with endpoints after running, go to `/docs` to view an interactive UI with endpoints. 
 
 **Troubleshooting**
 * Installing and running Android Studio or running Android applications correctly can get tricky. [Here](https://code.tutsplus.com/tutorials/how-to-solve-androids-most-common-error-messages--cms-28706) are some of the most common errors and how to deal with them. If your error is not on this list, please consult StackOverFlow.
-* The backend service contains a complex set of dependencies. If you encounter issues, consult the troubleshooting section of the Readme in the backend repo [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md).
+* The backend service contains a complex set of dependencies. If you encounter issues, consult the troubleshooting section of the Readme in the backend repo [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md#troubleshooting).
 
