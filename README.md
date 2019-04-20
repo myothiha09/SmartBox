@@ -5,9 +5,15 @@
    * Editing existing passcode.
 * Known Bugs
   * No Known Bugs
+* Previous Defects
+  * Lack of support for Lock History has been remedied. Users can now monitor actions taken on a lock via our backend server.
+  * Lack of support for different types of password, such as OTP, recurring, and permament passwords have been implemented. Users can now create many types of passwords to work with their needs.
 
 ## **Install Guide**
-Basic Component Architecture
+
+**Basic Repository Overview**
+
+_High-level component architecture showing backend service, Android App, Smart Lock, and important dependencies_
 ![Alt](https://i.imgur.com/lL4rEwx.png)
 
 For this product, Smart Lock functionality is powered by three custom pieces of software:
@@ -33,10 +39,11 @@ In addition, the software depends on three cloud-based services to operate:
     * Software
         * Java 1.8
         * Android SDK
-        * Python Virtualenv (Used to setup an environment to install Python dependencies)
-        * Python Pip (Used to auto-install all Python dependencies)
+        * Python 3.6 or 3.7
+        * [Python Virtualenv](https://docs.python-guide.org/dev/virtualenvs/) (Used to setup an environment to install Python dependencies)
+        * [Python Pip](https://pypi.org/project/pip/) (Used to auto-install all Python dependencies, )
             * Major dependencies include Flask, Pyrebase, and bcrypt
-        * Node Package Manager (NPM)
+        * [Node Package Manager (NPM)](https://www.npmjs.com/get-npm)
     * Hardware
         * Base64
         * requests
@@ -53,7 +60,7 @@ In addition, the software depends on three cloud-based services to operate:
 * For Raspberry code:
     * Run the python script called control.py.
 * For Backend code:
-    * Follow the instructions [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md).
+    * Running the server depends heavily on the operating system. Follow the instructions [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md) for your OS.
 
 **Installation**
 * For Android:
@@ -63,7 +70,7 @@ In addition, the software depends on three cloud-based services to operate:
     * Run `sudo nano /etc/rc.local`.
     * Add a line to run the python script. Append ‘ &’ to the line.
 * For Backend: 
-    * Follow the instructions found [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md).
+    * After installing the prerequisite packages (Python Pip, Virtualenv, and NPM), Follow the instructions found [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md).
 
 
 **Run Instructions**
@@ -76,5 +83,5 @@ In addition, the software depends on three cloud-based services to operate:
 
 **Troubleshooting**
 * Installing and running Android Studio or running Android applications correctly can get tricky. [Here](https://code.tutsplus.com/tutorials/how-to-solve-androids-most-common-error-messages--cms-28706) are some of the most common errors and how to deal with them. If your error is not on this list, please consult StackOverFlow.
-
+* The backend service contains a complex set of dependencies. If you encounter issues, consult the troubleshooting section of the Readme in the backend repo [here](https://github.com/JerAguilon/Junior-Design-Smart-Lock/blob/master/readme.md).
 
