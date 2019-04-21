@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.team8303.model.Model;
+import com.team8303.smartbox.active_smartboxes.ActiveSmartBoxesFragment;
 import com.team8303.smartbox.passcode.PasscodeFragment;
 import com.team8303.smartbox.smartbox_history.BoxHistoryFragment;
 import com.team8303.smartbox.smartbox_users.BoxUsersFragment;
@@ -51,6 +52,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new ActiveSmartBoxesFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -93,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_box) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new LockManagementFragment())
+                    .replace(R.id.container, new ActiveSmartBoxesFragment())
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.log_out) {

@@ -167,6 +167,7 @@ public class PasscodeFragment extends Fragment {
 
     @OnClick(R.id.fab) void onFabClick() {
         Toast.makeText(getContext(), "Adding passcode!", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getActivity(), EditPasscodeActivity.class));
     }
 
     @Override

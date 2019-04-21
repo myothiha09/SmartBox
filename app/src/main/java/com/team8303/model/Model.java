@@ -1,11 +1,14 @@
 package com.team8303.model;
 
+import com.team8303.smartbox.active_smartboxes.Smartbox;
 import com.team8303.SmartBoxApplication;
 import com.team8303.api.model.LockPasswordResponse;
 import com.team8303.api.model.LockPasswordsResponse;
 import com.team8303.events.GetPasswordDataEvent;
 import com.team8303.events.ModelPasscodeListEvent;
 import com.team8303.smartbox.smartbox_history.BoxHistoryItem;
+import com.team8303.smartbox.smartbox_history.LockStatus;
+import com.team8303.smartbox.smartbox_users.BoxUsersItem;
 import com.team8303.smartbox.smartbox_history.LockStatus;
 import com.team8303.smartbox.smartbox_users.BoxUsersItem;
 
@@ -37,8 +40,13 @@ public class Model {
     private static boolean USE_MOCK = true;
 
     private static Model model;
+    private static List<Smartbox> activeBoxes = new ArrayList<>();
+
     private Model() {
 
+        permanentPasscodes.add(new Passcode("Passcode 1", 0, "3/31/2019",
+        activeBoxes.add(new Smartbox("Box 1", "123456", 4));
+        activeBoxes.add(new Smartbox("Box 2", "132412", 1));
         permanentPasscodes.add(new Passcode("Passcode 1", 0, "3/31/2019",
                 false, "974632", PasscodeType.Permanent));
         permanentPasscodes.add(new Passcode("Passcode 2", 0, "3/31/2019",
@@ -226,5 +234,12 @@ public class Model {
             model = new Model();
         }
         return model;
+    }
+
+    public static List<Smartbox> getActiveSmartboxes() {
+        if (USE_MOCK) {
+            return activeBoxes;
+        }
+        return new ArrayList<>();
     }
 }
