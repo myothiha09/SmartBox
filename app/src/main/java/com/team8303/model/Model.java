@@ -1,5 +1,7 @@
 package com.team8303.model;
 
+import com.team8303.api.model.PostLockPasswordArgs;
+import com.team8303.events.PostLockPasswordEvent;
 import com.team8303.smartbox.active_smartboxes.Smartbox;
 import com.team8303.SmartBoxApplication;
 import com.team8303.api.model.LockPasswordResponse;
@@ -41,6 +43,8 @@ public class Model {
 
     private static Model model;
     private static List<Smartbox> activeBoxes = new ArrayList<>();
+    private static final String[] daysOfWeek = {"Sunday", "Monday", "Tuesday",
+            "Wednesday", "Thursday", "Friday", "Saturday"};
 
     private Model() {
 
@@ -161,6 +165,49 @@ public class Model {
         event.setTypeRequested(PasscodeType.Temporary);
         EventBus.getDefault().postSticky(event);
         return new ArrayList<>(); //placeholder
+    }
+
+    public static void savePasscode(String lockId, Passcode passcode) {
+        if (USE_MOCK) {
+            if (passcode.getType() == PasscodeType.Permanent) {
+                permanentPasscodes.remove(passcode);
+                permanentPasscodes.add(passcode);
+            } else if (passcode.getType() == PasscodeType.Temporary) {
+                tempPasscodes.remove(passcode);
+                tempPasscodes.add(passcode);
+            } else if (passcode.getType() == PasscodeType.One_time) {
+                onePasscodes.remove(passcode);
+                onePasscodes.add(passcode);
+            } else {
+                repeatPasscodes.remove(passcode);
+                repeatPasscodes.add(passcode);
+            }
+        } else {
+            PostLockPasswordArgs args = new PostLockPasswordArgs();
+            args.setPostLockPasswordArgs(new ArrayList<String>(), new ArrayList<String>(), -1,
+                    passcode.getNumber(), passcode.getType().name());
+            SmartBoxApplication.getInstance().getLockApiService().postLockPassword(lockId, args)
+                    .subscribe(new Observer<Response<LockPasswordResponse>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Response<LockPasswordResponse> lockPasswordResponse) {
+                            if (lockPasswordResponse.isSuccessful()) {
+//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
+                            } else {
+//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
+                            }
+                        }
+                    });
+        }
     }
 
     public static List<Passcode> getRepeatPasscodes() {
