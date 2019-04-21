@@ -23,6 +23,7 @@ public class SmartBoxApplication extends Application {
 
     private ApiService service;
     private LockApiService lockApiService;
+    private String lockId;
 
     private String token;
 
@@ -75,5 +76,13 @@ public class SmartBoxApplication extends Application {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getLockId() {
+        return lockId;
+    }
+
+    public void setLockId(String lockId) {
+        this.lockId = lockId;
     }
 }

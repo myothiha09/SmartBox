@@ -17,6 +17,8 @@ import com.team8303.smartbox.R;
 import com.team8303.smartbox.passcode.PasscodeRecyclerAdapter;
 import com.team8303.util.ItemClickedListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +43,8 @@ public class ActiveSmartBoxesFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        final List<Smartbox> list =  Model.getActiveSmartboxes();
-        adapter = new ActiveSmartBoxesAdapter(getContext(), list);
+        Model.getActiveSmartboxes();
+        adapter = new ActiveSmartBoxesAdapter(getContext(), new ArrayList<Smartbox>());
         adapter.setListener(new ItemClickedListener() {
             @Override
             public void itemChosen(int position) {
@@ -64,4 +66,15 @@ public class ActiveSmartBoxesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 }

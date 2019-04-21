@@ -35,30 +35,10 @@ import rx.schedulers.Schedulers;
 import java.util.List;
 
 public class LockApiService {
-    public void getLockList() {
-        SmartBoxApplication.getInstance().getService().getLockList()
+    public Observable<Response<UserLockResponse>> getLockList() {
+        return SmartBoxApplication.getInstance().getService().getLockList()
                 .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Response<UserLockResponse>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Response<UserLockResponse> userLockResponse) {
-                        if (userLockResponse.isSuccessful()) {
-                            EventBus.getDefault().postSticky(new LockListEvent(userLockResponse.body(), true));
-                        } else {
-                            EventBus.getDefault().postSticky(new LockListEvent(null, false));
-                        }
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
     public void getLockStatus(String lockId) {
@@ -114,30 +94,10 @@ public class LockApiService {
                 });
     }
 
-    public void updateLockStatus(String lockId, PutLockStatusArgs lockStatusArgs) {
-        SmartBoxApplication.getInstance().getService().updateLockStatus(lockId, lockStatusArgs)
+    public Observable<Response<PutLockStatusArgs>> updateLockStatus(String lockId, PutLockStatusArgs lockStatusArgs) {
+        return SmartBoxApplication.getInstance().getService().updateLockStatus(lockId, lockStatusArgs)
                 .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Response<PutLockStatusArgs>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Response<PutLockStatusArgs> putUserLockStatusResponse) {
-                        if (putUserLockStatusResponse.isSuccessful()) {
-                            EventBus.getDefault().postSticky(new UpdateLockStatusEvent(putUserLockStatusResponse.body(), true));
-                        } else {
-                            EventBus.getDefault().postSticky(new UpdateLockStatusEvent(null, false));
-                        }
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
     public void deleteLockId(String lockId) {
