@@ -41,7 +41,7 @@ public class SmartBoxApplication extends Application {
 //        )
         .addInterceptor(new StethoInterceptor())
         .build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("")
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://ec2-3-95-178-64.compute-1.amazonaws.com/")
 
                 .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
