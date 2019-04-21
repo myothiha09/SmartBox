@@ -158,7 +158,16 @@ public class EditPasscodeActivity extends AppCompatActivity {
         //SmartBoxApplication.getInstance().getLockApiService().getLockPasswordData(lockId, "-LcUcNZ4uX5eLdDevpQN");
         //SmartBoxApplication.getInstance().getLockApiService().putLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN", a);
         // SmartBoxApplication.getInstance().getLockApiService().deleteLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN");
-        SmartBoxApplication.getInstance().getLockApiService().postUserInfo();
+        // SmartBoxApplication.getInstance().getLockApiService().postUserInfo();
+        Passcode passcode = new Passcode(passcodeNameInput.getText().toString(), 0,
+                "3/31/2019", true, passcodeInput.getText().toString(),
+                (PasscodeType) passcodeTypeSpinner.getSelectedItem());
+        if (passcode.getType() == PasscodeType.Repeat) {
+            passcode.setDaysOfWeek(sunCheckbox.isChecked(),
+                    monCheckbox.isChecked(), tuesCheckbox.isChecked(), wedCheckbox.isChecked(),
+                    thursCheckbox.isChecked(), friCheckbox.isChecked(), satCheckbox.isChecked());
+        }
+        Model.savePasscode(lockId, passcode);
 
         finish(); //can kill this activity to go back to previous activity. previous activity might need to use Android Lifecycle to refresh data.
     }
