@@ -38,11 +38,12 @@ public class SmartBoxApplication extends Application {
 //                        return chain.proceed(request);
 //                    }
 //                }
-//        ).addInterceptor(new StethoInterceptor())
+//        )
+        .addInterceptor(new StethoInterceptor())
         .build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://45989972.ngrok.io/")
 
-//                .client(client)
+                .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

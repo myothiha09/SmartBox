@@ -28,6 +28,7 @@ import com.team8303.events.UpdateLockStatusEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Response;
+import rx.Observable;
 import rx.Observer;
 import rx.schedulers.Schedulers;
 
@@ -165,56 +166,16 @@ public class LockApiService {
                 });
     }
 
-    public void getLockHistory(String lockId) {
-        SmartBoxApplication.getInstance().getService().getLockHistory(lockId)
+    public Observable<Response<LockHistoryResponse>> getLockHistory(String lockId) {
+        return SmartBoxApplication.getInstance().getService().getLockHistory(lockId)
                 .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Response<LockHistoryResponse>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Response<LockHistoryResponse> lockHistoryResponse) {
-                        if (lockHistoryResponse.isSuccessful()) {
-                            EventBus.getDefault().postSticky(new GetLockHistoryEvent(lockHistoryResponse.body(), true));
-                        } else {
-                            EventBus.getDefault().postSticky(new GetLockHistoryEvent(null, false));
-                        }
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
-    public void getPasswordData(String lockId) {
-        SmartBoxApplication.getInstance().getService().getPasswordData(lockId)
+    public Observable<Response<LockPasswordsResponse>> getPasswordData(String lockId) {
+        return SmartBoxApplication.getInstance().getService().getPasswordData(lockId)
                 .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Response<LockPasswordsResponse>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Response<LockPasswordsResponse> lockPasswordsResponse) {
-                        if (lockPasswordsResponse.isSuccessful()) {
-                            EventBus.getDefault().postSticky(new GetPasswordDataEvent(lockPasswordsResponse.body(), true));
-                        } else {
-                            EventBus.getDefault().postSticky(new GetPasswordDataEvent(null, false));
-                        }
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
     public void postLockPassword(String lockId, PostLockPasswordArgs lockPasswordArgs) {
