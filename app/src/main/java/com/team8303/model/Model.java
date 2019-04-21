@@ -44,7 +44,6 @@ public class Model {
 
     private Model() {
 
-        permanentPasscodes.add(new Passcode("Passcode 1", 0, "3/31/2019",
         activeBoxes.add(new Smartbox("Box 1", "123456", 4));
         activeBoxes.add(new Smartbox("Box 2", "132412", 1));
         permanentPasscodes.add(new Passcode("Passcode 1", 0, "3/31/2019",
