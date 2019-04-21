@@ -1,39 +1,37 @@
 {
   "project_info": {
-    "project_number": "1008456830784",
-    "firebase_url": "https://smartbox-1a069.firebaseio.com",
-    "project_id": "smartbox-1a069",
-    "storage_bucket": "smartbox-1a069.appspot.com"
+    "project_number": "288203816569",
+    "firebase_url": "https://junior-design-smartlock-prod.firebaseio.com",
+    "project_id": "junior-design-smartlock-prod",
+    "storage_bucket": "junior-design-smartlock-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1008456830784:android:f98ff3945c5dc880",
+        "mobilesdk_app_id": "1:288203816569:android:f98ff3945c5dc880",
         "android_client_info": {
           "package_name": "com.team8303.smartbox"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1008456830784-ad52ns9fo2he1r3kh647tj5v81d1519c.apps.googleusercontent.com",
+          "client_id": "288203816569-o1a4knmam1egeijg6fckeg2fp6sjjdso.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByz9Y9I12V-xH8bTl9SMkkYXLw_moWUAM"
+          "current_key": "AIzaSyDyM6VqX4oekxkZCOgQc9HiDYDtnHxlsoI"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288203816569-o1a4knmam1egeijg6fckeg2fp6sjjdso.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
