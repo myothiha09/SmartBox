@@ -1,14 +1,26 @@
 package com.team8303.model;
 
 import com.team8303.smartbox.active_smartboxes.Smartbox;
+import com.team8303.SmartBoxApplication;
+import com.team8303.api.model.LockPasswordResponse;
+import com.team8303.api.model.LockPasswordsResponse;
+import com.team8303.events.GetPasswordDataEvent;
+import com.team8303.events.ModelPasscodeListEvent;
 import com.team8303.smartbox.smartbox_history.BoxHistoryItem;
 import com.team8303.smartbox.smartbox_history.LockStatus;
 import com.team8303.smartbox.smartbox_users.BoxUsersItem;
+import com.team8303.smartbox.smartbox_history.LockStatus;
+import com.team8303.smartbox.smartbox_users.BoxUsersItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import retrofit2.Response;
+import rx.Observer;
 
 /**
  * Created by Myo Thiha on 2/25/2019.
@@ -32,6 +44,7 @@ public class Model {
 
     private Model() {
 
+        permanentPasscodes.add(new Passcode("Passcode 1", 0, "3/31/2019",
         activeBoxes.add(new Smartbox("Box 1", "123456", 4));
         activeBoxes.add(new Smartbox("Box 2", "132412", 1));
         permanentPasscodes.add(new Passcode("Passcode 1", 0, "3/31/2019",
@@ -94,31 +107,117 @@ public class Model {
     }
 
     //please do all retrievals for data inside similar methods as before for seamless switching between mock and real
-    public static List<Passcode> getPermanentPasscodes() {
+    public static List<Passcode> getPermanentPasscodes(String lockId) {
         if (USE_MOCK) {
+            ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+            event.setRequestedPasscodes(permanentPasscodes);
+            event.setTypeRequested(PasscodeType.Permanent);
+            EventBus.getDefault().postSticky(event);
             return permanentPasscodes;
         }
+        SmartBoxApplication.getInstance().getLockApiService().getPasswordData(lockId)
+                .subscribe(new Observer<Response<LockPasswordsResponse>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Response<LockPasswordsResponse> lockPasswordsResponse) {
+                if (lockPasswordsResponse.isSuccessful()) {
+                    List<Passcode> passcodes = new ArrayList<>();
+                    List<LockPasswordResponse> permanentPasscodes = lockPasswordsResponse.body().getPermanent();
+                    for (LockPasswordResponse response: permanentPasscodes) {
+                        Passcode passcode = new Passcode(null, 0, response.getCreatedAt().toString(), true, response.getId(),
+                                PasscodeType.valueOf(response.getType()));
+                        passcodes.add(passcode);
+                    }
+                    ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+                    event.setTypeRequested(PasscodeType.Permanent);
+                    event.setRequestedPasscodes(passcodes);
+                    EventBus.getDefault().postSticky(event);
+                } else {
+                    EventBus.getDefault().postSticky(new GetPasswordDataEvent(null, false));
+                }
+            }
+        });
         return new ArrayList<>(); //placeholder can make retrofit calls here
     }
 
     public static List<Passcode> getTempPasscodes() {
         if (USE_MOCK) {
+            ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+            event.setRequestedPasscodes(tempPasscodes);
+            event.setTypeRequested(PasscodeType.Temporary);
+            EventBus.getDefault().postSticky(event);
             return tempPasscodes;
         }
+        ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+        event.setRequestedPasscodes(new ArrayList<Passcode>());
+        event.setTypeRequested(PasscodeType.Temporary);
+        EventBus.getDefault().postSticky(event);
         return new ArrayList<>(); //placeholder
     }
 
     public static List<Passcode> getRepeatPasscodes() {
         if (USE_MOCK) {
+            ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+            event.setRequestedPasscodes(repeatPasscodes);
+            event.setTypeRequested(PasscodeType.Repeat);
+            EventBus.getDefault().postSticky(event);
             return repeatPasscodes;
         }
+        ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+        event.setRequestedPasscodes(new ArrayList<Passcode>());
+        event.setTypeRequested(PasscodeType.Repeat);
+        EventBus.getDefault().postSticky(event);
         return new ArrayList<>(); //placeholder
     }
 
-    public static List<Passcode> getOnePasscodes() {
+    public static List<Passcode> getOnePasscodes(String lockId) {
         if (USE_MOCK) {
+            ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+            event.setTypeRequested(PasscodeType.One_time);
+            event.setRequestedPasscodes(onePasscodes);
+            EventBus.getDefault().postSticky(event);
             return onePasscodes;
         }
+        SmartBoxApplication.getInstance().getLockApiService().getPasswordData(lockId)
+                .subscribe(new Observer<Response<LockPasswordsResponse>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<LockPasswordsResponse> lockPasswordsResponse) {
+                        if (lockPasswordsResponse.isSuccessful()) {
+                            List<Passcode> passcodes = new ArrayList<>();
+                            List<LockPasswordResponse> oneTimePasscodes = lockPasswordsResponse.body().getOtp();
+                            for (LockPasswordResponse response: oneTimePasscodes) {
+                                Passcode passcode = new Passcode(null, 0, response.getCreatedAt().toString(), true, response.getId(),
+                                        PasscodeType.valueOf(response.getType()));
+                                passcodes.add(passcode);
+                            }
+                            ModelPasscodeListEvent event = new ModelPasscodeListEvent();
+                            event.setTypeRequested(PasscodeType.One_time);
+                            event.setRequestedPasscodes(passcodes);
+                            EventBus.getDefault().postSticky(event);
+                        } else {
+                            EventBus.getDefault().postSticky(new GetPasswordDataEvent(null, false));
+                        }
+                    }
+                });
         return new ArrayList<>(); //placeholder
     }
 
