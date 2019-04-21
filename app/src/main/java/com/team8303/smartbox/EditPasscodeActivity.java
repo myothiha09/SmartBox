@@ -25,6 +25,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.team8303.SmartBoxApplication;
+import com.team8303.api.model.PostLockPasswordArgs;
+import com.team8303.api.model.PutLockPasswordArgs;
+import com.team8303.api.model.PutLockStatusArgs;
+import com.team8303.api.model.UserLockResponse;
 import com.team8303.model.Model;
 import com.team8303.model.Passcode;
 import com.team8303.model.PasscodeType;
@@ -128,6 +133,33 @@ public class EditPasscodeActivity extends AppCompatActivity {
     }
     @OnClick(R.id.saveButton) void onSaveButtonClicked() {
         Toast.makeText(getApplicationContext(), "Save Button clicked", Toast.LENGTH_SHORT).show();
+        SmartBoxApplication.getInstance().getLockApiService().getLockStatus("-LbK-7O_EJzc38A7E3-L");
+        //SmartBoxApplication.getInstance().getLockApiService().getLockList();
+        UserLockResponse x = new UserLockResponse();
+        List<String> xList = new ArrayList<String>();
+        //xList.add("-LbK-7O_EJzc38A7E3-L");
+        String lockId = "-LbK-7O_EJzc38A7E3-L";
+        //x.setOwnedLockIds(xList);
+        //x.setOwnedLockIds(xList);
+        //SmartBoxApplication.getInstance().getLockApiService().postLock(x);
+        PutLockStatusArgs y = new PutLockStatusArgs();
+
+        y.setLockStatusArgs("123456", "OPEN_REQUESTED");
+        PostLockPasswordArgs z = new PostLockPasswordArgs();
+        Long longNum = new Long(-1);
+        z.setPostLockPasswordArgs(xList, xList, -1, "246899", "OTP");
+        PutLockPasswordArgs a = new PutLockPasswordArgs();
+        a.setLockPasswordArgs(xList, xList, -1, "123456");
+        //SmartBoxApplication.getInstance().getLockApiService().updateLockStatus(lockId, y);
+        //SmartBoxApplication.getInstance().getLockApiService().deleteLockId(lockId);
+        //SmartBoxApplication.getInstance().getLockApiService().getLockHistory(lockId);
+        //SmartBoxApplication.getInstance().getLockApiService().getPasswordData(lockId);
+        //SmartBoxApplication.getInstance().getLockApiService().postLockPassword(lockId, z);
+        //SmartBoxApplication.getInstance().getLockApiService().getLockPasswordData(lockId, "-LcUcNZ4uX5eLdDevpQN");
+        //SmartBoxApplication.getInstance().getLockApiService().putLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN", a);
+        // SmartBoxApplication.getInstance().getLockApiService().deleteLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN");
+        SmartBoxApplication.getInstance().getLockApiService().postUserInfo();
+
         finish(); //can kill this activity to go back to previous activity. previous activity might need to use Android Lifecycle to refresh data.
     }
 }

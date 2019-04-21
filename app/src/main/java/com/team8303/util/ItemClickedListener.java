@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public interface ItemClickedListener<T> {
+    List<Passcode> list = new ArrayList<>();
     void itemChosen(int position);
     void delItem(int position);
     void toggleItem(int position);
