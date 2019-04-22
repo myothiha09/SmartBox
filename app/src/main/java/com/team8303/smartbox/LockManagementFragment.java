@@ -47,7 +47,7 @@ public class LockManagementFragment extends Fragment {
     @OnClick(R.id.button_lock_unlock) void changeLockState() {
         if (stateChange.getText().equals(getString(R.string.unlock))) {
             stateChange.setText(getString(R.string.lock));
-            Model.unlockBox(SmartBoxApplication.getInstance().getLockId(), null);
+            Model.unlockBox(SmartBoxApplication.getInstance().getLockId(), "974632");
         } else {
             stateChange.setText(getString(R.string.unlock));
         }

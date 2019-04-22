@@ -1,6 +1,7 @@
 package com.team8303.model;
 
 import com.team8303.api.model.PostLockPasswordArgs;
+import com.team8303.api.model.PutLockPasswordArgs;
 import com.team8303.api.model.PutLockStatusArgs;
 import com.team8303.api.model.UserLockResponse;
 import com.team8303.events.LockListEvent;
@@ -44,7 +45,7 @@ public class Model {
 
     public static User user = new User("George Burdell", "buzzrox", "", UserType.USER, "678-136-7092", "buzz@gg.com", 1, "3/31/2019");
 
-    private static boolean USE_MOCK = true;
+    private static boolean USE_MOCK = false;
 
     private static Model model;
     private static List<Smartbox> activeBoxes = new ArrayList<>();
@@ -142,7 +143,13 @@ public class Model {
                     List<LockPasswordResponse> permanentPasscodes = lockPasswordsResponse.body().getPermanent();
                     for (LockPasswordResponse response: permanentPasscodes) {
                         Passcode passcode = new Passcode(null, 0, response.getCreatedAt().toString(), true, response.getId(),
-                                PasscodeType.valueOf(response.getType()));
+                                null);
+                        if (response.getType().equals("UNLIMITED")) {
+                            passcode.setType(PasscodeType.Permanent);
+                        } else if (response.getType().equals("OTP")) {
+                            passcode.setType(PasscodeType.One_time);
+                        }
+                        passcode.setId(response.getId());
                         passcodes.add(passcode);
                     }
                     ModelPasscodeListEvent event = new ModelPasscodeListEvent();
@@ -172,7 +179,7 @@ public class Model {
         return new ArrayList<>(); //placeholder
     }
 
-    public static void savePasscode(String lockId, Passcode passcode) {
+    public static void savePasscode(final String lockId, final Passcode passcode) {
         if (USE_MOCK) {
             if (passcode.getType() == PasscodeType.Permanent) {
                 permanentPasscodes.remove(passcode);
@@ -188,30 +195,59 @@ public class Model {
                 repeatPasscodes.add(passcode);
             }
         } else {
-            PostLockPasswordArgs args = new PostLockPasswordArgs();
-            args.setPostLockPasswordArgs(new ArrayList<String>(), new ArrayList<String>(), -1,
-                    passcode.getNumber(), passcode.getType().name());
-            SmartBoxApplication.getInstance().getLockApiService().postLockPassword(lockId, args)
-                    .subscribe(new Observer<Response<LockPasswordResponse>>() {
-                        @Override
-                        public void onCompleted() {
+            if (passcode.getId() != null) {
+                PutLockPasswordArgs args = new PutLockPasswordArgs();
+                args.setLockPasswordArgs(new ArrayList<String>(), new ArrayList<String>(), -1,
+                        passcode.getNumber());
+                SmartBoxApplication.getInstance().getLockApiService().putLockPassword(lockId, passcode.getId(), args)
+                        .subscribe(new Observer<Response<LockPasswordResponse>>() {
+                            @Override
+                            public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(Response<LockPasswordResponse> lockPasswordResponse) {
-                            if (lockPasswordResponse.isSuccessful()) {
-//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
-                            } else {
-//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Response<LockPasswordResponse> lockPasswordResponse) {
+                                if (lockPasswordResponse.isSuccessful()) {
+                                    Model.unlockBox(lockId, passcode.getNumber());
+//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
+                                } else {
+//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
+                                }
+                            }
+                        });
+            } else {
+                PostLockPasswordArgs args = new PostLockPasswordArgs();
+                args.setPostLockPasswordArgs(new ArrayList<String>(), new ArrayList<String>(), -1,
+                        passcode.getNumber(), passcode.getName());
+                SmartBoxApplication.getInstance().getLockApiService().postLockPassword(lockId, args)
+                        .subscribe(new Observer<Response<LockPasswordResponse>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Response<LockPasswordResponse> lockPasswordResponse) {
+                                if (lockPasswordResponse.isSuccessful()) {
+                                    Model.unlockBox(lockId, passcode.getNumber());
+//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
+                                } else {
+//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
+                                }
+                            }
+                        });
+            }
         }
     }
 
@@ -317,7 +353,9 @@ public class Model {
                     event.setLocks(locks);
                     EventBus.getDefault().postSticky(event);
                 } else {
-                    EventBus.getDefault().postSticky(new LockListEvent(null, false));
+                    ModelLockListEvent event = new ModelLockListEvent();
+                    event.setLocks(activeBoxes);
+                    EventBus.getDefault().postSticky(event);
                 }
             }
         });
@@ -332,9 +370,10 @@ public class Model {
             }
             history.add(new BoxHistoryItem("April 22, 2019", null, LockStatus.UNLOCKED, "Phone", permanentPasscodes.get(0)));
             boxHistory.put("April 22 2019", history);
+            EventBus.getDefault().postSticky(new UpdateLockStatusEvent(null, true));
         } else {
             PutLockStatusArgs args = new PutLockStatusArgs();
-            args.setLockStatusArgs(passcode, "UNLOCK_REQUESTED");
+            args.setLockStatusArgs(passcode, "OPEN_REQUESTED");
             SmartBoxApplication.getInstance().getLockApiService().updateLockStatus(lockId, args)
                     .subscribe(new Observer<Response<PutLockStatusArgs>>() {
                         @Override
@@ -369,7 +408,7 @@ public class Model {
             boxHistory.put("April 22 2019", history);
         } else {
             PutLockStatusArgs args = new PutLockStatusArgs();
-            args.setLockStatusArgs(null, "LOCK_REQUESTED");
+            args.setLockStatusArgs(null, "CLOSED");
             SmartBoxApplication.getInstance().getLockApiService().updateLockStatus(lockId, args)
                     .subscribe(new Observer<Response<PutLockStatusArgs>>() {
                         @Override

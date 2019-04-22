@@ -51,6 +51,7 @@ public class SmartBoxApplication extends Application {
 
         service = retrofit.create(ApiService.class);
         instance = this;
+        this.lockId = "-LbK-mwrfEHGLmZLybdY";
         lockApiService = new LockApiService();
         Stetho.initializeWithDefaults(this);
         super.onCreate();

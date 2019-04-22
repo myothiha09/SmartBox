@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.team8303.SmartBoxApplication;
 import com.team8303.events.ModelPasscodeListEvent;
 import com.team8303.model.Model;
 import com.team8303.model.Passcode;
@@ -66,7 +67,7 @@ public class PasscodeFragment extends Fragment {
                 if (title.equals(_permanent)) {
                     currentTab = "Permanent";
                   //  Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
-                    Model.getPermanentPasscodes(null);
+                    Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
                 } else if (title.equals(_temp)) {
                     currentTab = "Temporary";
                   //  Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
@@ -80,8 +81,6 @@ public class PasscodeFragment extends Fragment {
                    // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
                     Model.getOnePasscodes(null);
                 }
-
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -101,15 +100,16 @@ public class PasscodeFragment extends Fragment {
     public void onModelPasscodeListEvent(ModelPasscodeListEvent event) {
         EventBus.getDefault().removeStickyEvent(event);
         adapter.setPasscodeList(event.getRequestedPasscodes());
+        adapter.notifyDataSetChanged();
     }
 
     private void initRecycler() {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        List<Passcode> inputList = Model.getPermanentPasscodes(null);
+//        List<Passcode> inputList = Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
         adapter = new PasscodeRecyclerAdapter(getContext(), new ArrayList<Passcode>());
-        Model.getPermanentPasscodes(null);
+        Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
         if (currentTab.equals("Temporary")) {
             Model.getTempPasscodes();
         } else if (currentTab.equals("Repeat")) {
@@ -137,6 +137,7 @@ public class PasscodeFragment extends Fragment {
                 intent.putExtra("endDate", passcode.getEndDate());
                 intent.putExtra("startTime", passcode.getStartTime());
                 intent.putExtra("endTime", passcode.getEndTime());
+                intent.putExtra("Id", passcode.getId());
                 startActivity(intent);
             }
 

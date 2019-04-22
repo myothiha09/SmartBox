@@ -170,30 +170,10 @@ public class LockApiService {
                 });
     }
 
-    public void putLockPassword(String lockId, String passwordId, PutLockPasswordArgs putLockPasswordArgs) {
-        SmartBoxApplication.getInstance().getService().putLockPassword(lockId, passwordId, putLockPasswordArgs)
+    public Observable<Response<LockPasswordResponse>> putLockPassword(String lockId, String passwordId, PutLockPasswordArgs putLockPasswordArgs) {
+        return SmartBoxApplication.getInstance().getService().putLockPassword(lockId, passwordId, putLockPasswordArgs)
                 .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Response<LockPasswordResponse>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Response<LockPasswordResponse> lockPasswordResponse) {
-                        if (lockPasswordResponse.isSuccessful()) {
-                            EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
-                        } else {
-                            EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
-                        }
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
     public void deleteLockPassword(String lockId, String passwordId) {

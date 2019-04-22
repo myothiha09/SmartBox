@@ -74,6 +74,20 @@ public class EditPasscodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_passcode);
         ButterKnife.bind(this);
+        Intent init = getIntent();
+        passcodeNameInput.setText(init.getStringExtra("Name"));
+        passcodeInput.setText(init.getStringExtra("Number"));
+        boolean[] daysOfWeek = init.getBooleanArrayExtra("Days");
+        if (daysOfWeek != null) {
+            sunCheckbox.setChecked(daysOfWeek[0]);
+            monCheckbox.setChecked(daysOfWeek[1]);
+            tuesCheckbox.setChecked(daysOfWeek[2]);
+            wedCheckbox.setChecked(daysOfWeek[3]);
+            thursCheckbox.setChecked(daysOfWeek[4]);
+            friCheckbox.setChecked(daysOfWeek[5]);
+            satCheckbox.setChecked(daysOfWeek[6]);
+        }
+
         initSpinner();
     }
     public void initSpinner() {
@@ -85,6 +99,10 @@ public class EditPasscodeActivity extends AppCompatActivity {
         ArrayAdapter<PasscodeType> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, passcodeTypes);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         passcodeTypeSpinner.setAdapter(dataAdapter);
+        String chosen = getIntent().getStringExtra("Type");
+        if (chosen != null) {
+            passcodeTypeSpinner.setSelection(passcodeTypes.indexOf(PasscodeType.valueOf(chosen)));
+        }
         passcodeTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -133,23 +151,24 @@ public class EditPasscodeActivity extends AppCompatActivity {
     }
     @OnClick(R.id.saveButton) void onSaveButtonClicked() {
         Toast.makeText(getApplicationContext(), "Save Button clicked", Toast.LENGTH_SHORT).show();
-        SmartBoxApplication.getInstance().getLockApiService().getLockStatus("-LbK-7O_EJzc38A7E3-L");
+        String id = getIntent().getStringExtra("Id");
+//        SmartBoxApplication.getInstance().getLockApiService().getLockStatus("-LbK-7O_EJzc38A7E3-L");
         //SmartBoxApplication.getInstance().getLockApiService().getLockList();
-        UserLockResponse x = new UserLockResponse();
-        List<String> xList = new ArrayList<String>();
+//        UserLockResponse x = new UserLockResponse();
+//        List<String> xList = new ArrayList<String>();
         //xList.add("-LbK-7O_EJzc38A7E3-L");
-        String lockId = "-LbK-7O_EJzc38A7E3-L";
+//        String lockId = "-LbK-7O_EJzc38A7E3-L";
         //x.setOwnedLockIds(xList);
         //x.setOwnedLockIds(xList);
         //SmartBoxApplication.getInstance().getLockApiService().postLock(x);
-        PutLockStatusArgs y = new PutLockStatusArgs();
+//        PutLockStatusArgs y = new PutLockStatusArgs();
 
-        y.setLockStatusArgs("123456", "OPEN_REQUESTED");
-        PostLockPasswordArgs z = new PostLockPasswordArgs();
-        Long longNum = new Long(-1);
-        z.setPostLockPasswordArgs(xList, xList, -1, "246899", "OTP");
-        PutLockPasswordArgs a = new PutLockPasswordArgs();
-        a.setLockPasswordArgs(xList, xList, -1, "123456");
+//        y.setLockStatusArgs("123456", "OPEN_REQUESTED");
+//        PostLockPasswordArgs z = new PostLockPasswordArgs();
+//        Long longNum = new Long(-1);
+//        z.setPostLockPasswordArgs(xList, xList, -1, "246899", "OTP");
+//        PutLockPasswordArgs a = new PutLockPasswordArgs();
+//        a.setLockPasswordArgs(xList, xList, -1, "123456");
         //SmartBoxApplication.getInstance().getLockApiService().updateLockStatus(lockId, y);
         //SmartBoxApplication.getInstance().getLockApiService().deleteLockId(lockId);
         //SmartBoxApplication.getInstance().getLockApiService().getLockHistory(lockId);
@@ -160,14 +179,15 @@ public class EditPasscodeActivity extends AppCompatActivity {
         // SmartBoxApplication.getInstance().getLockApiService().deleteLockPassword(lockId, "-LcUcNZ4uX5eLdDevpQN");
         // SmartBoxApplication.getInstance().getLockApiService().postUserInfo();
         Passcode passcode = new Passcode(passcodeNameInput.getText().toString(), 0,
-                "3/31/2019", true, passcodeInput.getText().toString(),
+                getIntent().getStringExtra("Creation Time"), true, passcodeInput.getText().toString(),
                 (PasscodeType) passcodeTypeSpinner.getSelectedItem());
         if (passcode.getType() == PasscodeType.Repeat) {
             passcode.setDaysOfWeek(sunCheckbox.isChecked(),
                     monCheckbox.isChecked(), tuesCheckbox.isChecked(), wedCheckbox.isChecked(),
                     thursCheckbox.isChecked(), friCheckbox.isChecked(), satCheckbox.isChecked());
         }
-        Model.savePasscode(lockId, passcode);
+        passcode.setId(id);
+        Model.savePasscode(SmartBoxApplication.getInstance().getLockId(), passcode);
 
         finish(); //can kill this activity to go back to previous activity. previous activity might need to use Android Lifecycle to refresh data.
     }
