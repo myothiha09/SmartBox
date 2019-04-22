@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.team8303.SmartBoxApplication;
 import com.team8303.events.ModelPasscodeListEvent;
+import com.team8303.events.PostLockPasswordEvent;
 import com.team8303.model.Model;
 import com.team8303.model.Passcode;
 import com.team8303.smartbox.EditPasscodeActivity;
@@ -79,7 +80,7 @@ public class PasscodeFragment extends Fragment {
                 } else if (title.equals(_one_time)) {
                     currentTab = "One-Time";
                    // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
-                    Model.getOnePasscodes(null);
+                    Model.getOnePasscodes(SmartBoxApplication.getInstance().getLockId());
                 }
             }
 
@@ -101,6 +102,29 @@ public class PasscodeFragment extends Fragment {
         EventBus.getDefault().removeStickyEvent(event);
         adapter.setPasscodeList(event.getRequestedPasscodes());
         adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onPostLockPasswordEvent(PostLockPasswordEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+        String title = layout.getTabAt(layout.getSelectedTabPosition()).getText().toString();
+        if (title.equals(_permanent)) {
+            currentTab = "Permanent";
+            //  Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
+            Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
+        } else if (title.equals(_temp)) {
+            currentTab = "Temporary";
+            //  Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
+            adapter.setPasscodeList(Model.getTempPasscodes());
+        } else if (title.equals(_repeat)) {
+            currentTab = "Repeat";
+            //  Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
+            Model.getRepeatPasscodes();
+        } else if (title.equals(_one_time)) {
+            currentTab = "One-Time";
+            // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
+            Model.getOnePasscodes(SmartBoxApplication.getInstance().getLockId());
+        }
     }
 
     private void initRecycler() {

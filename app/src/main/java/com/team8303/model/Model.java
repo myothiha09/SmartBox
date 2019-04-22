@@ -4,7 +4,9 @@ import com.team8303.api.model.PostLockPasswordArgs;
 import com.team8303.api.model.PutLockPasswordArgs;
 import com.team8303.api.model.PutLockStatusArgs;
 import com.team8303.api.model.UserLockResponse;
+import com.team8303.api.model.UserLockStatusResponse;
 import com.team8303.events.LockListEvent;
+import com.team8303.events.LockStatusEvent;
 import com.team8303.events.ModelLockListEvent;
 import com.team8303.events.PostLockPasswordEvent;
 import com.team8303.events.UpdateLockStatusEvent;
@@ -214,17 +216,23 @@ public class Model {
                             @Override
                             public void onNext(Response<LockPasswordResponse> lockPasswordResponse) {
                                 if (lockPasswordResponse.isSuccessful()) {
-                                    Model.unlockBox(lockId, passcode.getNumber());
-//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
+//                                    Model.unlockBox(lockId, passcode.getNumber());
+                                    EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
                                 } else {
-//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
+                                    EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
                                 }
                             }
                         });
             } else {
                 PostLockPasswordArgs args = new PostLockPasswordArgs();
+                String type = "UNLIMITED";
+                if (passcode.getType() == PasscodeType.Permanent) {
+                    type = "UNLIMITED";
+                } else if (passcode.getType() == PasscodeType.One_time) {
+                    type = "OTP";
+                }
                 args.setPostLockPasswordArgs(new ArrayList<String>(), new ArrayList<String>(), -1,
-                        passcode.getNumber(), passcode.getName());
+                        passcode.getNumber(), type);
                 SmartBoxApplication.getInstance().getLockApiService().postLockPassword(lockId, args)
                         .subscribe(new Observer<Response<LockPasswordResponse>>() {
                             @Override
@@ -240,10 +248,10 @@ public class Model {
                             @Override
                             public void onNext(Response<LockPasswordResponse> lockPasswordResponse) {
                                 if (lockPasswordResponse.isSuccessful()) {
-                                    Model.unlockBox(lockId, passcode.getNumber());
-//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
+//                                    Model.unlockBox(lockId, passcode.getNumber());
+                                    EventBus.getDefault().postSticky(new PostLockPasswordEvent(lockPasswordResponse.body(), true));
                                 } else {
-//                                EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
+                                    EventBus.getDefault().postSticky(new PostLockPasswordEvent(null, false));
                                 }
                             }
                         });
@@ -430,6 +438,35 @@ public class Model {
                             }
                         }
                     });
+        }
+    }
+
+    public static void getLockStatus(String lockId) {
+        if (USE_MOCK) {
+
+        } else {
+            SmartBoxApplication.getInstance().getLockApiService().getLockStatus(lockId)
+                    .subscribe(new Observer<Response<UserLockStatusResponse>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Response<UserLockStatusResponse> userLockStatusResponse) {
+                    if (userLockStatusResponse.isSuccessful()) {
+
+                        EventBus.getDefault().postSticky(new LockStatusEvent(userLockStatusResponse.body(), true));
+                    } else {
+                        EventBus.getDefault().postSticky(new LockStatusEvent(null, false));
+                    }
+                }
+            });
         }
     }
 }

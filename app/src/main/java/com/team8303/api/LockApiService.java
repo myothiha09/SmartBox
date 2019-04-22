@@ -41,31 +41,10 @@ public class LockApiService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public void getLockStatus(String lockId) {
-        SmartBoxApplication.getInstance().getService().getLockStatus(lockId)
+    public Observable<Response<UserLockStatusResponse>> getLockStatus(String lockId) {
+        return SmartBoxApplication.getInstance().getService().getLockStatus(lockId)
                 .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Response<UserLockStatusResponse>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Response<UserLockStatusResponse> userLockStatusResponse) {
-                        if (userLockStatusResponse.isSuccessful()) {
-
-                            EventBus.getDefault().postSticky(new LockStatusEvent(userLockStatusResponse.body(), true));
-                        } else {
-                            EventBus.getDefault().postSticky(new LockStatusEvent(null, false));
-                        }
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
     public void postLock(UserLockResponse ownedLockIds) {
