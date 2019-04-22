@@ -11,11 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.team8303.events.ModelLockListEvent;
 import com.team8303.model.Model;
 import com.team8303.smartbox.LockManagementFragment;
 import com.team8303.smartbox.R;
 import com.team8303.smartbox.passcode.PasscodeRecyclerAdapter;
 import com.team8303.util.ItemClickedListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +46,28 @@ public class ActiveSmartBoxesFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        final List<Smartbox> list =  Model.getActiveSmartboxes();
-        adapter = new ActiveSmartBoxesAdapter(getContext(), list);
+        Model.getActiveSmartboxes();
+    }
+
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onModelLockListEvent(ModelLockListEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+        final List<Smartbox> lockList = event.getLocks();
+        adapter = new ActiveSmartBoxesAdapter(getContext(), lockList);
         adapter.setListener(new ItemClickedListener() {
+            final List<Smartbox> list = lockList;
             @Override
             public void itemChosen(int position) {
                 Toast.makeText(getContext(), list.get(position).getName(), Toast.LENGTH_SHORT).show();
@@ -63,5 +87,4 @@ public class ActiveSmartBoxesFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
     }
-
 }

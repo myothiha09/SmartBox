@@ -5,6 +5,7 @@ package com.team8303.model;
  */
 
 public class Passcode {
+    String id;
     String name;
     int usedCount;
     String creationTime;
@@ -107,5 +108,13 @@ public class Passcode {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

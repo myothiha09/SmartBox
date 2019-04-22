@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.EventLog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.team8303.SmartBoxApplication;
+import com.team8303.events.ModelPasscodeListEvent;
+import com.team8303.events.PostLockPasswordEvent;
 import com.team8303.model.Model;
 import com.team8303.model.Passcode;
 import com.team8303.smartbox.EditPasscodeActivity;
 import com.team8303.smartbox.R;
 import com.team8303.util.ItemClickedListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,27 +67,21 @@ public class PasscodeFragment extends Fragment {
                 String title = tab.getText().toString();
                 if (title.equals(_permanent)) {
                     currentTab = "Permanent";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
-                    adapter.setPasscodeList(Model.getPermanentPasscodes());
+                    Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
                 } else if (title.equals(_temp)) {
                     currentTab = "Temporary";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getTempPasscodes());
                 } else if (title.equals(_repeat)) {
                     currentTab = "Repeat";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
-                    adapter.setPasscodeList(Model.getRepeatPasscodes());
+                    Model.getRepeatPasscodes();
                 } else if (title.equals(_one_time)) {
                     currentTab = "One-Time";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                    // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
-                    adapter.setPasscodeList(Model.getOnePasscodes());
+                    Model.getOnePasscodes(SmartBoxApplication.getInstance().getLockId());
                 }
-
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -95,20 +97,50 @@ public class PasscodeFragment extends Fragment {
         return view;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onModelPasscodeListEvent(ModelPasscodeListEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+        adapter.setPasscodeList(event.getRequestedPasscodes());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onPostLockPasswordEvent(PostLockPasswordEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+        String title = layout.getTabAt(layout.getSelectedTabPosition()).getText().toString();
+        if (title.equals(_permanent)) {
+            currentTab = "Permanent";
+            //  Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
+            Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
+        } else if (title.equals(_temp)) {
+            currentTab = "Temporary";
+            //  Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
+            adapter.setPasscodeList(Model.getTempPasscodes());
+        } else if (title.equals(_repeat)) {
+            currentTab = "Repeat";
+            //  Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
+            Model.getRepeatPasscodes();
+        } else if (title.equals(_one_time)) {
+            currentTab = "One-Time";
+            // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
+            Model.getOnePasscodes(SmartBoxApplication.getInstance().getLockId());
+        }
+    }
+
     private void initRecycler() {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        Log.d("Tag!","The current tab is " + currentTab);
-        List<Passcode> inputList = Model.getPermanentPasscodes();
+//        List<Passcode> inputList = Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
+        adapter = new PasscodeRecyclerAdapter(getContext(), new ArrayList<Passcode>());
+        Model.getPermanentPasscodes(SmartBoxApplication.getInstance().getLockId());
         if (currentTab.equals("Temporary")) {
-            inputList = Model.getTempPasscodes();
+            Model.getTempPasscodes();
         } else if (currentTab.equals("Repeat")) {
-            inputList = Model.getRepeatPasscodes();
+            Model.getRepeatPasscodes();
         } else if (currentTab.equals("One-Time")) {
-            inputList = Model.getOnePasscodes();
+            Model.getOnePasscodes(null);
         }
-        adapter = new PasscodeRecyclerAdapter(getContext(), inputList);
         adapter.setListener(new ItemClickedListener<Passcode>() {
             List<Passcode> list = new ArrayList<>();
             @Override
@@ -129,6 +161,7 @@ public class PasscodeFragment extends Fragment {
                 intent.putExtra("endDate", passcode.getEndDate());
                 intent.putExtra("startTime", passcode.getStartTime());
                 intent.putExtra("endTime", passcode.getEndTime());
+                intent.putExtra("Id", passcode.getId());
                 startActivity(intent);
             }
 
@@ -158,4 +191,15 @@ public class PasscodeFragment extends Fragment {
         startActivity(new Intent(getActivity(), EditPasscodeActivity.class));
     }
 
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 }
