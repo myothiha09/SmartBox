@@ -289,6 +289,9 @@ public class Model {
 
     public static List<Smartbox> getActiveSmartboxes() {
         if (USE_MOCK) {
+            ModelLockListEvent event = new ModelLockListEvent();
+            event.setLocks(activeBoxes);
+            EventBus.getDefault().postSticky(event);
             return activeBoxes;
         }
         SmartBoxApplication.getInstance().getLockApiService().getLockList().subscribe(new Observer<Response<UserLockResponse>>() {
