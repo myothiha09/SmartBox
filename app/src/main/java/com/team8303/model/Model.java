@@ -1,7 +1,12 @@
 package com.team8303.model;
 
 import com.team8303.api.model.PostLockPasswordArgs;
+import com.team8303.api.model.PutLockStatusArgs;
+import com.team8303.api.model.UserLockResponse;
+import com.team8303.events.LockListEvent;
+import com.team8303.events.ModelLockListEvent;
 import com.team8303.events.PostLockPasswordEvent;
+import com.team8303.events.UpdateLockStatusEvent;
 import com.team8303.smartbox.active_smartboxes.Smartbox;
 import com.team8303.SmartBoxApplication;
 import com.team8303.api.model.LockPasswordResponse;
@@ -286,6 +291,103 @@ public class Model {
         if (USE_MOCK) {
             return activeBoxes;
         }
+        SmartBoxApplication.getInstance().getLockApiService().getLockList().subscribe(new Observer<Response<UserLockResponse>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Response<UserLockResponse> userLockResponse) {
+                if (userLockResponse.isSuccessful()) {
+                    List<String> lockIds = userLockResponse.body().getOwnedLockIds();
+                    final List<Smartbox> locks = new ArrayList<>();
+                    for (String id: lockIds) {
+                        locks.add(new Smartbox(null, id, 0));
+                    }
+                    ModelLockListEvent event = new ModelLockListEvent();
+                    event.setLocks(locks);
+                    EventBus.getDefault().postSticky(event);
+                } else {
+                    EventBus.getDefault().postSticky(new LockListEvent(null, false));
+                }
+            }
+        });
         return new ArrayList<>();
+    }
+
+    public static void unlockBox(String lockId, String passcode) {
+        if (USE_MOCK) {
+            List<BoxHistoryItem> history = boxHistory.get("April 22 2019");
+            if (history == null) {
+                history = new ArrayList<>();
+            }
+            history.add(new BoxHistoryItem("April 22, 2019", null, LockStatus.UNLOCKED, "Phone", permanentPasscodes.get(0)));
+            boxHistory.put("April 22 2019", history);
+        } else {
+            PutLockStatusArgs args = new PutLockStatusArgs();
+            args.setLockStatusArgs(passcode, "UNLOCK_REQUESTED");
+            SmartBoxApplication.getInstance().getLockApiService().updateLockStatus(lockId, args)
+                    .subscribe(new Observer<Response<PutLockStatusArgs>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Response<PutLockStatusArgs> putUserLockStatusResponse) {
+                            if (putUserLockStatusResponse.isSuccessful()) {
+                                EventBus.getDefault().postSticky(new UpdateLockStatusEvent(putUserLockStatusResponse.body(), true));
+                            } else {
+                                EventBus.getDefault().postSticky(new UpdateLockStatusEvent(null, false));
+                            }
+                        }
+                    });
+        }
+    }
+
+    public static void lockBox(String lockId) {
+        if (USE_MOCK) {
+            List<BoxHistoryItem> history = boxHistory.get("April 22 2019");
+            if (history == null) {
+                history = new ArrayList<>();
+            }
+            history.add(new BoxHistoryItem("April 22, 2019", null, LockStatus.LOCKED, "Phone", null));
+            boxHistory.put("April 22 2019", history);
+        } else {
+            PutLockStatusArgs args = new PutLockStatusArgs();
+            args.setLockStatusArgs(null, "LOCK_REQUESTED");
+            SmartBoxApplication.getInstance().getLockApiService().updateLockStatus(lockId, args)
+                    .subscribe(new Observer<Response<PutLockStatusArgs>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Response<PutLockStatusArgs> putUserLockStatusResponse) {
+                            if (putUserLockStatusResponse.isSuccessful()) {
+                                EventBus.getDefault().postSticky(new UpdateLockStatusEvent(putUserLockStatusResponse.body(), true));
+                            } else {
+                                EventBus.getDefault().postSticky(new UpdateLockStatusEvent(null, false));
+                            }
+                        }
+                    });
+        }
     }
 }
