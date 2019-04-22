@@ -65,22 +65,18 @@ public class PasscodeFragment extends Fragment {
                 String title = tab.getText().toString();
                 if (title.equals(_permanent)) {
                     currentTab = "Permanent";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _permanent, Toast.LENGTH_LONG).show();
                     Model.getPermanentPasscodes(null);
                 } else if (title.equals(_temp)) {
                     currentTab = "Temporary";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _temp, Toast.LENGTH_LONG).show();
                     adapter.setPasscodeList(Model.getTempPasscodes());
                 } else if (title.equals(_repeat)) {
                     currentTab = "Repeat";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                   //  Toast.makeText(getContext(), _repeat, Toast.LENGTH_LONG).show();
                     Model.getRepeatPasscodes();
                 } else if (title.equals(_one_time)) {
                     currentTab = "One-Time";
-                    Log.d("Tag!","The current tab has changed to " + currentTab);
                    // Toast.makeText(getContext(), _one_time, Toast.LENGTH_LONG).show();
                     Model.getOnePasscodes(null);
                 }
@@ -111,7 +107,7 @@ public class PasscodeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        Log.d("Tag!","The current tab is " + currentTab);
+        List<Passcode> inputList = Model.getPermanentPasscodes(null);
         adapter = new PasscodeRecyclerAdapter(getContext(), new ArrayList<Passcode>());
         Model.getPermanentPasscodes(null);
         if (currentTab.equals("Temporary")) {
